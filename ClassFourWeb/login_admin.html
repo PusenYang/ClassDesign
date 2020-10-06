@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>后台登录</title>
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./lib/layui/css/layui.css" media="all">
+  <script type="text/javascript" src="./js/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript" src="./lib/layui/layui.js"></script>
+</head>
+
+<body class="layui-login">
+  <form method="post" class="layui-form">
+    <div class="login-wrap">
+      <p style="text-align: center;font-size: xx-large">登录</p>
+      <div class="login-form" style="padding: 20px 30px">
+        <div class="col">
+          <input id="username" placeholder="用户名" type="text" lay-verify="required" class="login-input">
+          <label class="icon user" for="txtUserName"></label>
+        </div>
+        <div class="col">
+          <input id="password" lay-verify="required" placeholder="密码" type="password" class="login-input">
+          <label class="icon pwd" for="txtPassword"></label>
+        </div>
+        <div class="col">
+          <input type="button" name="admin_login_btn" onclick="do_login()" value="登录" lay-submit lay-filter="login" class="login-btn" />
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <script>
+     // 登录成功，跳转页面
+     function do_login() {
+        var username = document.getElementById("username").value;
+        var password = $("#password").val();
+        alert(username+password);
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:8000/rds1123/login_admin",
+            data: JSON.stringify({
+                "username": "admin", 
+                "password": "admin"
+            }),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+            // cache: true,
+            timeout: 5000,
+            success: function (data) {
+                alert("success: "+data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("请求对象XMLHttpRequest: "+XMLHttpRequest.responseText);
+			    alert("错误类型textStatus: "+textStatus);
+			    alert("异常对象errorThrown: "+errorThrown);
+            },
+            complete: function () {}
+        });
+     }
+  </script>
+</body>
+
+</html>

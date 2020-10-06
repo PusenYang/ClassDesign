@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="hg-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" href="./lib/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="./lib/admin/admin.css" media="all">
+    <link rel="stylesheet" href="./lib/Scrollbar/jquery.scrollbar.css">
+    <script type="text/javascript" src="./lib/admin/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="./lib/Scrollbar/jquery.scrollBar.js"></script>
+    <script type="text/javascript" src="./lib/layui/layui.js"></script>
+    <script type="text/javascript" src="./lib/admin/admin.js"></script>
+    
+</head>
+
+<body class="layui-body-content">
+    <div class="layui-fluid">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                <p style="text-align: center;font-size: large;">某某站物资列表</p>
+                <span class="layui-layout-right">
+                    <a href="javascript:;" hg-event="fullscreen">
+                        <i class="layui-icon layui-icon-screen-full"></i>
+                    </a>
+                </span>
+            </div>
+            <div class="layui-card-body">
+                <div class="">
+                    <button class="layui-btn layui-btn-sm layui-btn-warm" onclick="edit()"><i
+                            class="layui-icon">&#xe642;</i>修改</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="del()"><i
+                            class="layui-icon">&#xe640;</i>删除</button>
+                </div>
+                <table class="layui-hide" id="test" lay-filter="test"></table>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    
+    //修改
+    function edit(obj, field) {
+        console.log(field); //点击的单元格
+        //obj通过行tool修改-lay-event
+        var row = obj ? obj : table.getSelected(); 
+        console.log(row);
+        if (row) {
+            hg.open('修改资源信息' + row.data.typeName, 'resource_manage_oper.html', 600, 400);
+        } else {
+            hg.msg('请选中一行数据，再操作！');
+        }
+    }
+    //删除
+    function del(obj) {
+        //obj通过行tool删除-lay-event
+        var row = obj ? obj : table.getSelected(); //hg.table.datatable('test', 'getSelected');
+        if (row) {
+            hg.confirm("删除当前选中的用户，确定要删除吗？", function () {
+                //row.del(); //只删本地数据
+                hg.msg('删除成功！');
+                table && table.reload(); //hg.table.datatable('test', 'reload');
+            });
+        } else {
+            hg.msg('请选中一行数据，再操作！');
+        }
+    }
+    //查看
+    function depts(obj, field) {
+        console.log(field); //点击的单元格
+        hg.msg(JSON.stringify(obj.data));
+    }
+    
+    //监听表单提交事件
+    hg.form.onsubmit('sreach', function (data) {
+        var start = data.start;
+        var end = data.end;
+        if (start && end) {
+            if (start > end) {
+                hg.msg("时间范围错误，请重新选择!");
+                return false;
+            }
+        } else if (start || end) {
+            hg.msg("时间范围错误，请重新选择!");
+            return false;
+        }
+        hg.msg(JSON.stringify(data));
+        table && table.reload(data);
+    });
+    
+    var tableCols = [[
+        { field: 'typeName', width: '20%', title: '物资类型'}, 
+        { field: 'totalAmount', width: '20%', title: '物资总数' }, 
+        { field: 'totalWeight', width: '20%', title: '物资总重'}, 
+        { 
+            field: 'image', width: '20%', title: '图片', templet: function (d) {
+                return '<span><a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="depts">查看</a></span>'
+            }
+        }, 
+        {
+            field: 'right', width: '20%', title: '操作', templet: function (d) {
+                return '<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>'
+            }
+        }
+    ]
+    ];
+    var toolbar = [
+        {
+            text: '修改',
+            layuiicon: '&#xe642;',
+            handler: function (obj, row) {
+                if (row) {
+                    hg.open('修改资源信息' + row.data.typeName, 'resource_manage_oper.html', 600, 400);
+                } else {
+                    hg.msg('请选中一行数据，再操作！');
+                }
+            }
+        }, {
+            text: '删除',
+            layuiicon: '&#xe640;',
+            handler: function (obj, row) {
+                if (row) {
+                    hg.confirm("删除当前选中的用户，确定要删除吗？", function () {
+                        row.del(); //只删本地数据
+                        hg.msg('删除成功！');
+                        //obj.reload();
+                    });
+                } else {
+                    hg.msg('请选中一行数据，再操作！');
+                }
+            }
+        }
+    ];
+    //基本数据表格
+   var table = hg.table.datatable('test', '用户管理', 'data1.json', {}, tableCols, '', false, 'full-180');
+   table.onrowclick(function(obj) {
+        console.log(obj);
+        console.log('行单击事件');
+   });
+</script>
+
+</html>

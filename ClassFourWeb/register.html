@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="hg-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="../../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../lib/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../lib/admin/admin.css" media="all">
+    <link rel="stylesheet" href="../../lib/Scrollbar/jquery.scrollbar.css">
+    <script type="text/javascript" src="../../lib/admin/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../lib/Scrollbar/jquery.scrollBar.js"></script>
+    <script type="text/javascript" src="../../lib/layui/layui.js"></script>
+    <script type="text/javascript" src="../../lib/admin/admin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <style>
+
+    </style>
+</head>
+
+<body class="layui-body-content">
+    <div class="layui-fluid">
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <p style="text-align: center;font-size: large;">注册</p>
+        </div>
+        <div class="layui-card-body" style="padding: 15px;">
+          <form class="layui-form" action="" lay-filter="component-form-group">
+            <!-- 选择框 -->
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">角色选择</label>
+                  <div class="layui-input-inline">
+                    <select name="quiz">
+                      <option value="">请选择</option>
+                      <option value="个人用户">个人用户</option>
+                      <option value="调配站负责人">调配站负责人</option>
+                      <option value="接收站负责人">接收站负责人</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="layui-inline">     
+                  <div class="layui-btn-container">
+                    <!-- <button class="layui-btn layui-btn-xs">查看角色含义</button> -->
+                    <dd lay-unselect>
+                      <a onclick="window.open('user_guide.html')">
+                          <div class="layui-btn-container">
+                              <button class="layui-btn layui-btn-xs">查看角色含义</button>
+                          </div>
+                      </a>
+                   <dd lay-unselect>
+                  </div>
+                </div>
+              </div>
+            <!-- 输入框 -->
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="number" lay-verify="required|number" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                  <input type="password" name="number" lay-verify="required|number" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">确认密码</label>
+                <div class="layui-input-inline">
+                  <input type="password" name="number" lay-verify="required|number" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">联系电话</label>
+              <div class="layui-input-block">
+                <input type="text" name="identity" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+              </div>
+          </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">个人地址</label>
+                <div class="layui-input-block">
+                  <input type="text" name="identity" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <!-- 若非申请站点负责人, 则以下几项不是必填 -->
+            <p style="text-align:center">若非申请站点负责人, 则以下几项不是必填</p>
+            <hr class="layui-bg-green">
+            <div class="layui-form-item">
+              <label class="layui-form-label">验证身份证</label>
+              <div class="layui-input-block">
+                <input type="text" name="identity" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">站点名称</label>
+                <div class="layui-input-block">
+                  <input type="text" name="identity" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择站点地址</label>
+                <div class="layui-input-block">
+                  <div class="layui-inline">
+                    <select name="quiz1">
+                      <option value="">请选择省</option>
+                      <option value="浙江" selected="">浙江省</option>
+                      <option value="你的工号">江西省</option>
+                      <option value="你最喜欢的老师">福建省</option>
+                    </select>
+                  </div>
+                  <div class="layui-inline">
+                    <select name="quiz2">
+                      <option value="">请选择市</option>
+                      <option value="杭州">杭州</option>
+                      <option value="宁波" disabled="">宁波</option>
+                      <option value="温州">温州</option>
+                      <option value="温州">台州</option>
+                      <option value="温州">绍兴</option>
+                    </select>
+                  </div>
+                  <div class="layui-inline">
+                    <select name="quiz3">
+                      <option value="">请选择县/区</option>
+                      <option value="西湖区">西湖区</option>
+                      <option value="余杭区">余杭区</option>
+                      <option value="拱墅区">临安市</option>
+                    </select>
+                  </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">站点详细地址</label>
+                <div class="layui-input-block">
+                  <input type="text" name="identity" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">上传资格凭证</label>
+                <div class="layui-upload-drag" id="test-upload-drag">
+                    <i class="layui-icon"></i>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                  </div>
+              </div>  
+            <div class="layui-form-item layui-form-text">
+              <label class="layui-form-label">备注</label>
+              <div class="layui-input-block">
+                <textarea name="text" placeholder="请输入内容" class="layui-textarea"></textarea>
+              </div>
+            </div>        
+            <div class="layui-form-item layui-layout-admin">
+              <div class="layui-input-block">
+                <div class="layui-footer" style="left: 0;padding: 10px 0;text-align: center;background-color: #fff;">
+                  <button class="layui-btn" lay-submit="" lay-filter="component-form-demo1">提交申请</button>
+                  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</body>
+<script>
+  // 自定义验证规则
+  hg.form.verify({
+    title: function(value){
+      if(value.length < 5){
+        return '标题至少得5个字符啊';
+      }
+    }
+    ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+    ,content: function(value){
+      layedit.sync(editIndex);
+    }
+  });
+  // 监听switch操作事件
+  hg.form.onswitch('component-form-switchTest',function(data){
+      hg.msg(data.elem.name+'开关checked：'+(data.elem.checked?'开启':'禁用'));
+      console.log(data.elem.checked);
+      console.log(data.othis);
+      layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis);
+  });
+  // 监听表单提交事件
+  hg.form.onsubmit('component-form-demo1', function (data) {
+      hg.msg(JSON.stringify(data));
+  });
+</script>
+
+</html>

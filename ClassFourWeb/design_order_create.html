@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="hg-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="../../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../lib/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../lib/admin/admin.css" media="all">
+    <link rel="stylesheet" href="../../lib/Scrollbar/jquery.scrollbar.css">
+    <script type="text/javascript" src="../../lib/admin/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../lib/Scrollbar/jquery.scrollBar.js"></script>
+    <script type="text/javascript" src="../../lib/layui/layui.js"></script>
+    <script type="text/javascript" src="../../lib/admin/admin.js"></script>
+</head>
+
+<body class="layui-body-content">
+    <div class="layui-fluid">
+      <div class="layui-card">
+        <div class="layui-card-header">
+            <p style="text-align: center;font-size: large;">创建调配单</p>
+        </div>
+        <div class="layui-card-body" style="padding: 15px;">
+            <div class="layui-form-item">
+                <fieldset class="layui-elem-field">
+                    <legend>调配建议</legend>
+                    <div class="layui-field-box">
+                      <p style="text-align:left;font-size:medium">某某某接收站当前缺少某某口罩xx个，根据您站的物资数量，建议运往某某接收站xx个某某口罩</p>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-card-body" style="padding: 15px;">
+          <form class="layui-form" action="" lay-filter="component-form-group">
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择物资类型</label>
+                <div class="layui-input-block">
+                  <div class="layui-inline">
+                    <select name="quiz1">
+                      <option value="">请选择</option>
+                      <option value="浙江" >N95口罩</option>
+                      <option value="你的工号">PM2.5口罩</option>
+                      <option value="你最喜欢的老师">普通医用外科口罩</option>
+                    </select>
+                  </div>
+                  <div class="layui-inline">
+                    <input type="text" class="layui-input" placeholder="请输入数量">
+                  </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择物资类型</label>
+                <div class="layui-input-block">
+                  <div class="layui-inline">
+                    <select name="quiz1">
+                      <option value="">请选择</option>
+                      <option value="浙江" >N95口罩</option>
+                      <option value="你的工号">PM2.5口罩</option>
+                      <option value="你最喜欢的老师">普通医用外科口罩</option>
+                    </select>
+                  </div>
+                  <div class="layui-inline">
+                    <input type="text" class="layui-input" placeholder="请输入数量">
+                  </div>
+                </div>
+            </div>
+            
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择物资类型</label>
+                <div class="layui-input-block">
+                  <div class="layui-inline">
+                    <select name="quiz1">
+                      <option value="">请选择</option>
+                      <option value="浙江" >N95口罩</option>
+                      <option value="你的工号">PM2.5口罩</option>
+                      <option value="你最喜欢的老师">普通医用外科口罩</option>
+                    </select>
+                  </div>
+                  <div class="layui-inline">
+                    <input type="text" class="layui-input" placeholder="请输入数量">
+                  </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择接收站</label>
+                <div class="layui-input-block">
+                  <div class="layui-inline">
+                    <select name="quiz1">
+                      <option value="">选择省份</option>
+                      <option value="浙江" >湖北省</option>
+                      <option value="你的工号">湖南省</option>
+                      <option value="你最喜欢的老师">普通医用外科口罩</option>
+                    </select>
+                  </div>
+                  <div class="layui-inline">
+                    <select name="quiz1">
+                        <option value="">选择接收站</option>
+                        <option value="浙江" >湖北省</option>
+                        <option value="你的工号">湖南省</option>
+                        <option value="你最喜欢的老师">普通医用外科口罩</option>
+                      </select>
+                 </div>
+                 <div class="layui-inline">
+                    <select name="quiz1">
+                        <option value="">选择运输负责人</option>
+                        <option value="浙江" >湖北省</option>
+                        <option value="你的工号">湖南省</option>
+                        <option value="你最喜欢的老师">普通医用外科口罩</option>
+                      </select>
+                 </div>
+                </div>
+            </div>
+ 
+            <div class="layui-form-item layui-layout-admin">
+              <div class="layui-input-block">
+                <div class="layui-footer" style="left: 0;padding: 10px 0;text-align: center;background-color: #fff;">
+                  <button class="layui-btn" lay-submit="" lay-filter="component-form-demo1">提交</button>
+                  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</body>
+<script>
+  // 自定义验证规则
+  hg.form.verify({
+    title: function(value){
+      if(value.length < 5){
+        return '标题至少得5个字符啊';
+      }
+    }
+    ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+    ,content: function(value){
+      layedit.sync(editIndex);
+    }
+  });
+  // 监听switch操作事件
+  hg.form.onswitch('component-form-switchTest',function(data){
+      hg.msg(data.elem.name+'开关checked：'+(data.elem.checked?'开启':'禁用'));
+      console.log(data.elem.checked);
+      console.log(data.othis);
+      layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis);
+  });
+  // 监听表单提交事件
+  hg.form.onsubmit('component-form-demo1', function (data) {
+      hg.msg(JSON.stringify(data));
+  });
+</script>
+
+</html>

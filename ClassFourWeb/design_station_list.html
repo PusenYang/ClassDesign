@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="hg-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" href="./lib/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="./lib/admin/admin.css" media="all">
+    <link rel="stylesheet" href="./lib/Scrollbar/jquery.scrollbar.css">
+    <script type="text/javascript" src="./lib/admin/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="./lib/Scrollbar/jquery.scrollBar.js"></script>
+    <script type="text/javascript" src="./lib/layui/layui.js"></script>
+    <script type="text/javascript" src="./lib/admin/admin.js"></script>
+</head>
+
+<body class="layui-body-content">
+    <div class="layui-fluid">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                <p style="text-align:center;font-size:large">调配站列表</p>
+            </div>
+            <div class="layui-card-body">
+                <div class="layui-form">
+                    <div class="layui-form-item">
+                        <dd lay-unselect>
+                            <a onclick="hg.open('调配站地图','station_list_map.html','','',true)">
+                                <div class="layui-btn-container">
+                                    <button class="layui-btn layui-btn-sm">调配站地图</button>
+                                </div>
+                            </a>
+                        <dd lay-unselect>
+                    </div>
+                    <div class="layui-form-item">
+                        <!-- 地址选择框 -->                      
+                        <div class="layui-inline">
+                            <select name="quiz1">
+                                <option value="all">全部</option>
+                                <option value="浙江">浙江省</option>
+                                <option value="你的工号">江西省</option>
+                                <option value="你最喜欢的老师">福建省</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 搜索按钮 -->
+                        <div class="layui-inline layui-show-xs-block">
+                            <button class="layui-btn layui-btn-sm layui-btn-normal" lay-submit lay-filter="sreach"><i class="layui-icon layui-icon-sm">&#xe615;</i>
+                            </button>
+                        </div>
+                        
+                    </div>
+                </div>
+                <table class="layui-hide" id="test" lay-filter="test"></table>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    
+    //查看物资资源
+    function depts(obj, field) {
+        console.log(field); //点击的单元格
+        hg.msg("jdlas"); // 发送一次请求，获取这个站点的物资资源
+    }
+    
+    var tableCols = [[
+        { field: 'id', width: '10%', title: '站点ID'}, 
+        { field: 'name', width: '15%', title: '站点名称', style: 'color: #ff5722;' }, 
+        { field: 'province', width: '10%', title: '省份'}, 
+        { field: 'city', title: '城市', width: '10%'}, 
+        { field: 'address', width: '20%', title: '详细地址'}, 
+        { field: 'managerName', width: '10%', title: '负责人'}, 
+        { field: 'managerPhone', width: '15%', title: '联系电话' },
+        { 
+            field: 'wealth', width: '15%', title: '详情', templet: function (d) {
+                return '<span><a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="depts">查看</a></span>'
+            }
+        }
+    ]
+    ];
+    //基本数据表格
+   var table = hg.table.datatable('test', '用户管理', 'data1.json', {}, tableCols, '', false, 'full-180');
+   table.onrowclick(function(obj) {
+        console.log(obj);
+        console.log('行单击事件');
+   });
+</script>
+
+</html>
