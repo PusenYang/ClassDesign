@@ -2,10 +2,13 @@ package four.classd.cd.controller;
 
 import four.classd.cd.annotation.Authorize;
 import four.classd.cd.config.SwaggerConfig;
+import four.classd.cd.constant.RoleConstant;
 import four.classd.cd.dao.*;
 import four.classd.cd.model.entity.*;
 import four.classd.cd.model.enums.ExceptionType;
+import four.classd.cd.model.enums.StationStatus;
 import four.classd.cd.model.vo.ResultVO;
+import four.classd.cd.model.vo.StationMapVO;
 import four.classd.cd.util.ResultVOUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +46,38 @@ public class InfoController {
 
     @Autowired
     private ReceiveStationDao receiveStationDao;
+
+    @ResponseBody
+    @GetMapping("/station_map")
+    @ApiOperation(value = "获取站点地图")
+    public ResultVO getStationMap() {
+        // 先获取所有站点
+        List<DesignStation> designStations = designStationDao.findAll(StationStatus.CHECKED.getCode());
+        List<ReceiveStation> receiveStations = receiveStationDao.findAll(StationStatus.CHECKED.getCode());
+        List<StationMapVO> res = new ArrayList<>();
+        for (DesignStation ds : designStations) {
+            StationMapVO smv = new StationMapVO();
+            smv.setLat(ds.getLatitude());
+            smv.setLng(ds.getLongitude());
+            smv.setName(ds.getName());
+            smv.setType(RoleConstant.DESIGN_MANAGER);
+            smv.setAddress(ds.getAddress());
+            smv.setManager(ds.getManagerName());
+            res.add(smv);
+        }
+        for (ReceiveStation rs : receiveStations) {
+            StationMapVO smvv = new StationMapVO();
+            smvv.setLat(rs.getLatitude());
+            smvv.setLng(rs.getLongitude());
+            smvv.setName(rs.getName());
+            smvv.setType(RoleConstant.RECEIVE_MANAGER);
+            smvv.setAddress(rs.getAddress());
+            smvv.setManager(rs.getManagerName());
+            res.add(smvv);
+        }
+        log.info(">>>站点地图 获取成功");
+        return ResultVOUtil.success(res);
+    }
 
     @ResponseBody
     @GetMapping("/d_station")

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 /**
  * @author PusenYang
@@ -17,10 +18,12 @@ import java.net.URL;
  * @date 2020/10/6 20:59
  */
 public class GaodeMapUtil {
+
     /**
      * 高德地图通过地址获取经纬度
+     * 经度在前 维度在后
      */
-    public static String getLocation(String address) throws IOException {
+    public static String[] getLocation(String address) throws IOException {
         String geturl = "http://restapi.amap.com/v3/geocode/geo?key="+GaodeMap.KEY +"&address="+address;
         String location = "";
 
@@ -40,8 +43,8 @@ public class GaodeMapUtil {
         JSONArray sddressArr = JSON.parseArray(a.get("geocodes").toString());
         JSONObject c = JSON.parseObject(sddressArr.get(0).toString());
         location = c.get("location").toString();
-
-        return location;
+        String[] arr = location.split(",");
+        return arr;
     }
 
     /*

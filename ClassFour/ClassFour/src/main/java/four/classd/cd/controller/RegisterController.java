@@ -8,6 +8,7 @@ import four.classd.cd.dao.*;
 import four.classd.cd.model.entity.*;
 import four.classd.cd.model.enums.ExceptionType;
 import four.classd.cd.model.vo.ResultVO;
+import four.classd.cd.util.GaodeMapUtil;
 import four.classd.cd.util.KeyUtil;
 import four.classd.cd.util.MD5Util;
 import four.classd.cd.util.ResultVOUtil;
@@ -111,6 +112,15 @@ public class RegisterController {
         user.setSalt(salt);
         user.setPhone(phone);
         user.setAddress(address);
+        try {
+            String[] arr = GaodeMapUtil.getLocation(address);
+            user.setLongitude(Double.valueOf(arr[0]));
+            user.setLatitude(Double.valueOf(arr[1]));
+        } catch (IOException e) {
+            log.info(">>>用户注册 地址解析出现错误");
+            return ResultVOUtil.error(ExceptionType.SERVER_ERROR.getCode(),"地址解析出现错误, 请检查您输入的地址");
+        }
+        userDao.addUser(user);
 
         log.info(">>>注册 普通用户注册成功");
         return ResultVOUtil.success();
@@ -186,6 +196,14 @@ public class RegisterController {
         station.setManagerId(managerId);
         station.setManagerName(username);
         station.setManagerPhone(phone);
+        try {
+            String[] arr = GaodeMapUtil.getLocation(stationAddress);
+            station.setLongitude(Double.valueOf(arr[0]));
+            station.setLatitude(Double.valueOf(arr[1]));
+        } catch (IOException e) {
+            log.info(">>>调配站注册 地址解析出现错误");
+            return ResultVOUtil.error(ExceptionType.SERVER_ERROR.getCode(),"地址解析出现错误, 请检查您输入的地址");
+        }
         designStationDao.addStation(station);
 
         /* 添加管理人员 */
@@ -273,6 +291,14 @@ public class RegisterController {
         station.setManagerId(managerId);
         station.setManagerName(username);
         station.setManagerPhone(phone);
+        try {
+            String[] arr = GaodeMapUtil.getLocation(stationAddress);
+            station.setLongitude(Double.valueOf(arr[0]));
+            station.setLatitude(Double.valueOf(arr[1]));
+        } catch (IOException e) {
+            log.info(">>>接收站注册 地址解析出现错误");
+            return ResultVOUtil.error(ExceptionType.SERVER_ERROR.getCode(),"地址解析出现错误, 请检查您输入的地址");
+        }
         receiveStationDao.addStation(station);
 
         /* 添加管理人员 */

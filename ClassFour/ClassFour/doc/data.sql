@@ -15,8 +15,8 @@ CREATE TABLE `class_design`.`design_station`  (
   `id` int NOT NULL,
   `name` varchar(45) NULL,
   `address` varchar(255) NULL,
-  `longitude` double(45, 0) NULL,
-  `latitude` double(45, 0) NULL,
+  `longitude` double(10, 5) NULL,
+  `latitude` double(10, 5) NULL,
   `province` varchar(45) NULL,
   `city` varchar(45) NULL,
   `county` varchar(45) NULL,
@@ -33,8 +33,8 @@ CREATE TABLE `class_design`.`receive_station`  (
   `id` int NOT NULL,
   `name` varchar(45) NULL,
   `address` varchar(255) NULL,
-  `longitude` double(45, 0) NULL,
-  `latitude` double(45, 0) NULL,
+  `longitude` double(10, 5) NULL,
+  `latitude` double(10, 5) NULL,
   `province` varchar(45) NULL,
   `city` varchar(45) NULL,
   `image` varchar(255) NULL,
@@ -66,6 +66,8 @@ CREATE TABLE `class_design`.`user`  (
   `token` varchar(45) NULL,
   `phone` varchar(45) NULL,
   `address` varchar(255) NULL,
+  `longitude` double(10, 5) NULL,
+  `latitude` double(10, 5) NULL,
   PRIMARY KEY (`id`)
 );
 

@@ -20,5 +20,7 @@ public class User {
     private String token; // 验证
     private String phone;
     private String address;
+    private double longitude; // 经度
+    private double latitude; // 纬度
     private String createTime;
 }

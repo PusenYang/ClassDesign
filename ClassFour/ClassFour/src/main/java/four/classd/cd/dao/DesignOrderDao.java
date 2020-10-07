@@ -41,4 +41,8 @@ public interface DesignOrderDao {
 
     @Insert({"insert into",DESIGN_ORDER_RESOURCE_TABLE,"(",INSERT_FIELD2,") values(#{number},#{typeCode},#{amount})"})
     Integer addResource(DesignOrderResource orderDetail);
+
+    // 获取某种资源
+    @Select({"select amount from",DESIGN_ORDER_RESOURCE_TABLE,"where number=#{number} and type_code=#{code}"})
+    Integer getResource(@Param("number")String number,@Param("code")int code);
 }

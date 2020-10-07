@@ -1,8 +1,3 @@
-<!-- 
-    功能概述: 查看林科大及周边地区出现故障的共享单车定位及相关信息
-    功能实现: 
-        1. 在文件标识出键入目标坐标点和故障信息, 即可在地图中查看到对应的报备信息
- -->
 <!DOCTYPE html>
 <html>
 
@@ -26,14 +21,14 @@
         }
         
         .info_ui_img {
-            background-image: url("images/error.png");
+            background-image: url("");
             background-position: 97% 0%;
             background-repeat: no-repeat;
             background-size: 50px;
         }
         
         .info_ui_Nimg {
-            background-image: url("images/carNormal.png");
+            background-image: url("");
             background-position: 97% 0%;
             background-repeat: no-repeat;
             background-size: 40px;
@@ -80,7 +75,9 @@
     <div id="container"></div>
     <!-- js文件  百度地图API-->
     <script type="text/javascript" src="http://api.map.baidu.com/api?key=&v=1.3&services=true"></script>
+
     <script type="text/javascript">
+
         // 创建示例数据
         var points = [{
             // 地点1： 林科大一教学楼： 113.004324；28.137788
@@ -97,57 +94,36 @@
             "type": "正常",
             "name": "LKD136817",
             "place": "林科大汇贤居"
-        }, {
-            // 地点3： 林科大西园风景园林学院： 112.998575； 28.137342
-            "lng": 112.998575,
-            "lat": 28.137342,
-            "type": "故障",
-            "name": "LKD137342",
-            "place": "林科大西园风景园林学院"
-        }, {
-            // 地点4： 林科大西元体艺馆： 113.003067； 28.139938
-            "lng": 113.003067,
-            "lat": 28.139938,
-            "type": "正常",
-            "name": "LKD139938",
-            "place": "林科大西元体艺馆"
-        }, {
-            // 地点5： 林科大西园运动场游泳池： 112.997443； 28.133838
-            "lng": 112.997443,
-            "lat": 28.133838,
-            "type": "正常",
-            "name": "LKD133838",
-            "place": "林科大西园运动场游泳池"
-        }, {
-            // 地点6： 林科大东门橙子街区： 113.007998； 28.139524
-            "lng": 113.007998,
-            "lat": 28.139524,
-            "type": "故障",
-            "name": "LKD139524",
-            "place": "林科大东门橙子街区"
-        }, {
-            // 地点7： 林业科学宿舍： 113.006875； 28.136777
-            "lng": 113.006875,
-            "lat": 28.136777,
-            "type": "正常",
-            "name": "LKD136777",
-            "place": "林业科学宿舍"
-        }, {
-            // 地点8： 林大路长沙银行： 28.13647； 28.136332
-            "lng": 113.010703,
-            "lat": 28.136332,
-            "type": "正常",
-            "name": "LKD136332",
-            "place": "林大路长沙银行"
-        }, {
-            // 地点9： 林大路三湘社区： 113.009984； 28.141301
-            "lng": 113.009984,
-            "lat": 28.141301,
-            "type": "正常",
-            "name": "LKD141301",
-            "place": "林大路三湘社区"
         }
         ];
+
+        window.onload = function() {
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:8000/rds1123/info/station_map",
+                data: "",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+                // cache: true,
+                timeout: 5000,
+                success: function (result) {
+                    if (result.code != 0) {
+                        alert(result.message);
+                    }
+                    var data = result.data;
+                    for (var i in data) {
+                        points.push(data[i]);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    
+                },
+                complete: function () {
+            
+                }
+            });
+        };
 
         // 在指定容器创建地图实例并设置最大最小缩放级别
         var map = new BMap.Map("container", {
@@ -157,7 +133,7 @@
 
         // 初始化地图，设置中心点和显示级别
         // 林科大雅琳圆
-        map.centerAndZoom(new BMap.Point(113.005655, 28.137081), 16);
+        map.centerAndZoom(new BMap.Point(113.005655, 28.137081), 7);
 
         //开启鼠标滚轮缩放功能，仅对PC上有效
         map.enableScrollWheelZoom(true);
@@ -176,12 +152,12 @@
                 point = new BMap.Point(points[i].lng, points[i].lat);
                 var myIcon;
                 // 判断正常或者故障，根据不同装填显示不同Icon
-                if (points[i].type == "故障") {
-                    myIcon = new BMap.Icon("images/fault.png", new BMap.Size(32, 32), {
+                if (points[i].type == "2") {
+                    myIcon = new BMap.Icon("./images/location_receive.png", new BMap.Size(32, 32), {
                         offset: new BMap.Size(16, 32),
                     });
                 } else {
-                    myIcon = new BMap.Icon("images/normal.png", new BMap.Size(32, 32), {
+                    myIcon = new BMap.Icon("./images/location_design.png", new BMap.Size(32, 32), {
                         offset: new BMap.Size(16, 32),
                     });
                 };
@@ -202,55 +178,48 @@
             }
         };
 
-        //显示信息窗口，显示标注点的信息
-        // function showInfo(thisMaker, point) {
-        //     var sContent = '';
-        //     if (point.type == "故障") {
-        //         sContent += '<ul class="info_ul info_ui_img">';
-        //         sContent += '   <li class="info_lierr">';
-        //         sContent += '       <span class="info_span">机器状态：</span>';
-        //         sContent += '       <span>' + point.type + '</span>';
-        //         sContent += '   </li>';
-        //         sContent += '   <li class="info_lierr">';
-        //         sContent += '       <span class="info_span">机器编号：</span>';
-        //         sContent += '       <span>' + point.name + '</span>';
-        //         sContent += '   </li>';
-        //         sContent += '   <li class="info_lierr">';
-        //         sContent += '       <span class="info_span">所在地点：</span>';
-        //         sContent += '       <span>' + point.place + '</span>';
-        //         sContent += '   </li>';
-        //         sContent += '   <li class="ta-c info_lierr">';
-        //         sContent += '       <div class="btn" onclick=func("' + point.name + '")>' + "检修" + '</div>';
-        //         sContent += '   </li>';
-        //         sContent += '</ul>';
-        //     } else {
-        //         sContent += '<ul class="info_ul info_ui_Nimg">';
-        //         sContent += '   <li class="info_li">';
-        //         sContent += '       <span class="info_span">机器状态：</span>';
-        //         sContent += '       <span>' + point.type + '</span>';
-        //         sContent += '   </li>';
-        //         sContent += '   <li class="info_li">';
-        //         sContent += '       <span class="info_span">机器编号：</span>';
-        //         sContent += '       <span>' + point.name + '</span>';
-        //         sContent += '   </li>';
-        //         sContent += '   <li class="info_li">';
-        //         sContent += '       <span class="info_span">所在地点：</span>';
-        //         sContent += '       <span>' + point.place + '</span>';
-        //         sContent += '   </li>';
-        //         sContent += '</ul>';
-        //     }
+        // 显示信息窗口，显示标注点的信息
+        function showInfo(thisMaker, point) {
+            var sContent = '';
+            if (point.type == "2") {
+                sContent += '<ul class="info_ul info_ui_img">';
+                sContent += '   <li class="info_lierr">';
+                sContent += '       <span class="info_span">站点名称：</span>';
+                sContent += '       <span>' + point.name + '</span>';
+                sContent += '   </li>';
+                sContent += '   <li class="info_lierr">';
+                sContent += '       <span class="info_span">负责人：</span>';
+                sContent += '       <span>' + point.manager + '</span>';
+                sContent += '   </li>';
+                sContent += '   <li class="info_lierr">';
+                sContent += '       <span class="info_span">站点地址：</span>';
+                sContent += '       <span>' + point.address + '</span>';
+                sContent += '   </li>';
+                sContent += '</ul>';
+            } else {
+                sContent += '<ul class="info_ul info_ui_Nimg">';
+                sContent += '   <li class="info_li">';
+                sContent += '       <span class="info_span">站点名称：</span>';
+                sContent += '       <span>' + point.name + '</span>';
+                sContent += '   </li>';
+                sContent += '   <li class="info_li">';
+                sContent += '       <span class="info_span">负责人：</span>';
+                sContent += '       <span>' + point.manager + '</span>';
+                sContent += '   </li>';
+                sContent += '   <li class="info_li">';
+                sContent += '       <span class="info_span">站点地址：</span>';
+                sContent += '       <span>' + point.address + '</span>';
+                sContent += '   </li>';
+                sContent += '</ul>';
+            }
 
-        //     // 创建信息窗口对象
-        //     var infoWindow = new BMap.InfoWindow(sContent);
+            // 创建信息窗口对象
+            var infoWindow = new BMap.InfoWindow(sContent);
 
-        //     //图片加载完毕重绘infowindow
-        //     thisMaker.openInfoWindow(infoWindow);
-        // };
+            //图片加载完毕重绘infowindow
+            thisMaker.openInfoWindow(infoWindow);
+        };
 
-        // 弹窗增加点击事件
-        // function func(data) {
-        //     alert("xxx调配站" + data);
-        // }
     </script>
 </body>
 

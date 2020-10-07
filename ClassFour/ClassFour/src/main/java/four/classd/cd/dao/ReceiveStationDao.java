@@ -33,7 +33,7 @@ public interface ReceiveStationDao {
     Integer getTotalAmount(@Param("id")int id);
 
     // 添加站点
-    @Insert({"insert into",RS_TABLE,"(",INSERT_FIELD,") values(#{id},#{name},#{address},#{longitude},#{latitude},#{province},#{city},#{image},#{remark},#{managerId},#{managerName},#{managerPhone},#{status},,#{createTime})"})
+    @Insert({"insert into",RS_TABLE,"(",INSERT_FIELD,") values(#{id},#{name},#{address},#{longitude},#{latitude},#{province},#{city},#{image},#{remark},#{managerId},#{managerName},#{managerPhone},#{status},#{createTime})"})
     Integer addStation(ReceiveStation station);
 
     @Update({"update",RS_TABLE,"set status = #{status} where id = #{id}"})

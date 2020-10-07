@@ -5,11 +5,13 @@ import four.classd.cd.config.SwaggerConfig;
 import four.classd.cd.dao.*;
 import four.classd.cd.model.entity.*;
 import four.classd.cd.model.enums.ExceptionType;
+import four.classd.cd.model.enums.ResourceType;
 import four.classd.cd.model.enums.UserOrderStatus;
 import four.classd.cd.model.vo.ResultVO;
 import four.classd.cd.service.OrderService;
 import four.classd.cd.util.KeyUtil;
 import four.classd.cd.util.ResultVOUtil;
+import four.classd.cd.util.TypeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -135,7 +137,13 @@ public class UserOrderController {
     @GetMapping("/resource_detail")
     @ApiOperation(value = "获取物资单资源信息")
     public ResultVO getOrderRes(@RequestParam("number")String number) {
-        
+        StringBuilder sb = new StringBuilder();
+        sb.append("该物资单共有")
+          .append(ResourceType.N95.getMsg()).append(TypeUtil.getNumber(userOrderDao.getResource(number,ResourceType.N95.getCode()))).append("个; ")
+          .append(ResourceType.PM25.getMsg()).append(TypeUtil.getNumber(userOrderDao.getResource(number,ResourceType.PM25.getCode()))).append("个; ")
+          .append(ResourceType.Ori.getMsg()).append(TypeUtil.getNumber(userOrderDao.getResource(number,ResourceType.Ori.getCode()))).append("个; ");
+        log.info(">>>获取物资单信息成功");
+        return ResultVOUtil.success(sb.toString());
     }
 
     @ResponseBody

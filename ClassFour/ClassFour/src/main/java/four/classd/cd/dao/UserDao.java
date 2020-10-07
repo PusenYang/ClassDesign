@@ -16,10 +16,10 @@ import java.util.List;
 public interface UserDao {
 
     static String USER_TABLE = "class_design.user";
-    static String INSERT_FIELD = "id, username, avatar, password, salt, phone, address, create_time";
+    static String INSERT_FIELD = "id, username, avatar, password, salt, phone, address, latitude, longitude, create_time";
 
     // 添加用户
-    @Insert({"insert into",USER_TABLE,"(",INSERT_FIELD,") values(#{id},#{username},#{avatar},#{password},#{salt},#{phone},#{address}, ,#{createTime})"})
+    @Insert({"insert into",USER_TABLE,"(",INSERT_FIELD,") values(#{id},#{username},#{avatar},#{password},#{salt},#{phone},#{address},#{latitude},#{longitude} ,#{createTime})"})
     Integer addUser(User user);
 
     @Update({"update",USER_TABLE,"(",INSERT_FIELD,") values(#{id},#{username},#{avatar},#{password},#{salt},#{phone},#{address})"})
