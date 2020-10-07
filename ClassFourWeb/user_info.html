@@ -29,24 +29,24 @@
           <div class="layui-card">
             
             <div class="layui-card-body">
-              <p style="text-align:center;font-size:medium"><img src="/images/avatar_user.jpg"  width="80" height="80"></p>
+              <p style="text-align:center;font-size:medium"><img id="info_avatar" src="/images/logo_diao.png"  width="80" height="80"></p>
               
               <fieldset class="layui-elem-field">
                 <legend>用户名</legend>
                 <div class="layui-field-box">
-                  <p style="text-align:left;font-size:medium">个人信息</p>
+                  <p id="info_name" style="text-align:left;font-size:medium;font-weight: 200;">默认</p>
                 </div>
               </fieldset>
               <fieldset class="layui-elem-field">
                 <legend>联系电话</legend>
                 <div class="layui-field-box">
-                  <p style="text-align:left;font-size:medium">个人信息</p>
+                    <p id="info_phone" style="text-align:left;font-size:medium;font-weight: 200;">默认</p>
                 </div>
               </fieldset>
               <fieldset class="layui-elem-field">
                 <legend>我的地址</legend>
                 <div class="layui-field-box">
-                  <p style="text-align:left;font-size:medium">个人信息</p>
+                    <p id="info_address" style="text-align:left;font-size:medium;font-weight: 200;">默认</p>
                 </div>
               </fieldset>
               
@@ -57,6 +57,39 @@
     </div>
 </body>
 <script>
+
+    window.onload = function() {
+        var token = document.cookie.split(";")[0];
+        if (token.length < 2) return;
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:8000/rds1123/info/user",
+            data: {
+                "token": token
+            },
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+            // cache: true,
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                document.getElementById("info_avatar").src=result.data[0];
+                document.getElementById("info_name").innerText=result.data[1];
+                document.getElementById("info_phone").innerText=result.data[2];
+                document.getElementById("info_address").innerText=result.data[3];
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("获取个人信息失败 ！");
+            },
+            complete: function () {
+        
+            }
+        });
+    }
+
   layui.use('element', function () {
       var element = layui.element;
   });

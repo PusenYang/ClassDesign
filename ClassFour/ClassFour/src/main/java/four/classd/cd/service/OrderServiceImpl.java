@@ -7,7 +7,7 @@ import four.classd.cd.dao.DesignOrderDao;
 import four.classd.cd.dao.UserOrderDao;
 import four.classd.cd.model.entity.DesignOrder;
 import four.classd.cd.model.entity.UserOrder;
-import four.classd.cd.model.enums.OrderStatus;
+import four.classd.cd.model.enums.UserOrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,22 +49,22 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean userVerifySend(String number) {
-        return userOrderDao.updateStatusByNumber(OrderStatus.DE_UNRECEIVE.getCode(), number) >= 0;
+        return userOrderDao.updateStatusByNumber(UserOrderStatus.DE_UNRECEIVE.getCode(), number) >= 0;
     }
 
     @Override
     public boolean designVerifyGet(String number) {
-        return userOrderDao.updateStatusByNumber(OrderStatus.DE_RECEIVE.getCode(), number) >= 0;
+        return userOrderDao.updateStatusByNumber(UserOrderStatus.DE_RECEIVE.getCode(), number) >= 0;
     }
 
     @Override
     public boolean designVerifySend(String number) {
-        return userOrderDao.updateStatusByNumber(OrderStatus.GOING.getCode(), number) >= 0;
+        return userOrderDao.updateStatusByNumber(UserOrderStatus.GOING.getCode(), number) >= 0;
     }
 
     @Override
     public boolean receiveVerifySend(String number) {
-        return userOrderDao.updateStatusByNumber(OrderStatus.FINAL_RECEIVE.getCode(), number) >= 0;
+        return userOrderDao.updateStatusByNumber(UserOrderStatus.FINAL_RECEIVE.getCode(), number) >= 0;
     }
 
     @Override

@@ -9,6 +9,10 @@ import four.classd.cd.model.enums.ResourceType;
  */
 public class TypeUtil {
 
+    public static int getNumber(Integer tmp) {
+        return tmp == null ? 0 : tmp;
+    }
+
     public static ResourceType getType(String tmp) {
         if (tmp.equals(ResourceType.N95.getCode())) {
             return ResourceType.N95;

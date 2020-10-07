@@ -3,15 +3,21 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>后台登录</title>
+  <title>登录</title>
   <meta name="renderer" content="webkit|ie-comp|ie-stand">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="stylesheet" href="../../css/font-awesome.min.css">
   <link rel="stylesheet" href="./css/style.css">
-  <link rel="stylesheet" href="./lib/layui/css/layui.css" media="all">
-  <script type="text/javascript" src="./lib/admin/jquery-1.9.1.min.js"></script>
-  <script type="text/javascript" src="./lib/layui/layui.js"></script>
+  <link rel="stylesheet" href="../../lib/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../lib/admin/admin.css" media="all">
+  <link rel="stylesheet" href="../../lib/Scrollbar/jquery.scrollbar.css">
+  <script type="text/javascript" src="./js/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript" src="../../lib/admin/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript" src="../../lib/Scrollbar/jquery.scrollBar.js"></script>
+  <script type="text/javascript" src="../../lib/layui/layui.js"></script>
+  <script type="text/javascript" src="../../lib/admin/admin.js"></script>
 </head>
 
 <body class="layui-login">
@@ -20,41 +26,72 @@
       <p style="text-align: center;font-size: xx-large">登录</p>
       <div class="login-form" style="padding: 20px 30px">
         <div class="col">
-          <div class="layui-input-inline">
-              <select name="quiz">
-                <option value="">请选择</option>
-                <option value="个人用户">个人用户</option>
-                <option value="调配站负责人">调配站负责人</option>
-                <option value="接收站负责人">接收站负责人</option>
-              </select>
-          </div>
-      </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                  <select name="quiz" id="role_select">
+                    <option value="">请选择角色</option>
+                    <option value="3">个人用户</option>
+                    <option value="1">调配站负责人</option>
+                    <option value="2">接收站负责人</option>
+                  </select>
+                </div>
+              </div>
+        </div>
         <div class="col">
-          <input name="username" placeholder="用户名" type="text" lay-verify="required" class="login-input">
+          <input id="username" placeholder="用户名或手机号" type="text" class="login-input">
           <label class="icon user" for="txtUserName"></label>
         </div>
         <div class="col">
-          <input name="password" lay-verify="required" placeholder="密码" type="password" class="login-input">
+          <input id="password" placeholder="密码" type="password" class="login-input">
           <label class="icon pwd" for="txtPassword"></label>
         </div>
         <div class="col">
-          <input type="submit" value="登录" lay-submit lay-filter="login" class="login-btn" />
+          <input type="button" name="admin_login_btn" onclick="do_login()" value="登录" class="login-btn" />
         </div>
       </div>
     </div>
   </form>
+
   <script>
-    $(function () {
-      layui.use('form', function () {
-        var form = layui.form;
-        form.on('submit(login)', function (data) {
-          layer.msg(JSON.stringify(data.field), function () {
-            location.href = 'index.html'
-          });
-          return false;
+     // 登录成功，跳转页面
+     function do_login() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var select = document.getElementById("role_select");
+        var idx = select.selectedIndex;
+        var flag = select.options[idx].value;
+        if (flag.length < 1 || username.length < 1 || password.length < 1) {
+            alert("信息未填写完整 ！");
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:8000/rds1123/login",
+            data: JSON.stringify({
+                "username": username, 
+                "password": password,
+                "flag":flag
+            }),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+            // cache: true,
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                document.cookie = result.data;
+                location.reload();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("登录失败 ！");
+            },
+            complete: function () {
+        
+            }
         });
-      });
-    })
+     }
   </script>
 </body>
 

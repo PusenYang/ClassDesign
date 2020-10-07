@@ -47,8 +47,12 @@ public class AuthorizeAspect {
 
     @Before("permission()")
     public void checkAuthority(JoinPoint joinPoint) throws Exception{
-        // todo 获取token
-        String token = "";
+        MethodSignature joinPointObject = (MethodSignature) joinPoint.getSignature();
+        String[] parameterNames = joinPointObject.getParameterNames();
+        // 获取token参数的下标
+        int idx = getIdx(parameterNames, "token");
+        Object[] args = joinPoint.getArgs();
+        String token = String.valueOf(args[idx]);
         if (token == null || token.isEmpty()) {
             log.info("未登录, 当前获取的token为空");
             throw new Exception("token为空，权限不足");
@@ -56,7 +60,6 @@ public class AuthorizeAspect {
         /* 根据role注解获取方法对应角色，从对应数据库中查找用户 */
         // 获取切入的 Method
         Signature signature = joinPoint.getSignature();
-        MethodSignature joinPointObject = (MethodSignature) joinPoint.getSignature();
         Method method = joinPointObject.getMethod();
 
         // 如果方法没有权限注解，去搜索类上是否有注解
@@ -97,5 +100,15 @@ public class AuthorizeAspect {
         else {
             return false;
         }
+    }
+
+    private int getIdx(String[] array, String tar) {
+        if (array.length < 1) return -1;
+        else {
+            for (int i = 0; i < array.length; i ++) {
+                if (array[i].equals(tar)) return i;
+            }
+        }
+        return -1;
     }
 }

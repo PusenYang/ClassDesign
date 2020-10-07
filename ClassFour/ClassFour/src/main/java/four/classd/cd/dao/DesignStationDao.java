@@ -48,18 +48,20 @@ public interface DesignStationDao {
     DesignStation findById(@Param("id")int id);
 
     // 根据省份查询站点
-    @Select({"select * from",DS_TABLE,"where province = #{province}"})
-    DesignStation findByProvince(@Param("province")String province);
+    @Select({"select * from",DS_TABLE,"where province = #{province} and status=#{status}"})
+    List<DesignStation> findByProvince(@Param("province")String province, @Param("status")int status);
 
     // 根据市查询站点
     @Select({"select * from",DS_TABLE,"where city = #{city}"})
-    DesignStation findByCity(@Param("city")String city);
+    List<DesignStation> findByCity(@Param("city")String city);
 
     @Select({"select * from",DS_TABLE,"where county = #{county}"})
-    DesignStation findByCounty(@Param("county")String county);
+    List<DesignStation> findByCounty(@Param("county")String county);
 
     // 查询所有站点
     @Select({"select * from",DS_TABLE,})
-    List<DesignStation> findAll();
+    List<DesignStation> findAlls();
 
+    @Select({"select * from",DS_TABLE,"where status = #{status}"})
+    List<DesignStation> findAll(@Param("status")int status);
 }

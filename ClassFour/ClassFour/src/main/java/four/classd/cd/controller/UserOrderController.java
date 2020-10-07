@@ -5,7 +5,7 @@ import four.classd.cd.config.SwaggerConfig;
 import four.classd.cd.dao.*;
 import four.classd.cd.model.entity.*;
 import four.classd.cd.model.enums.ExceptionType;
-import four.classd.cd.model.enums.OrderStatus;
+import four.classd.cd.model.enums.UserOrderStatus;
 import four.classd.cd.model.vo.ResultVO;
 import four.classd.cd.service.OrderService;
 import four.classd.cd.util.KeyUtil;
@@ -80,7 +80,7 @@ public class UserOrderController {
         UserOrder order = new UserOrder();
         order.setId(KeyUtil.generateOrdID());
         order.setNumber(KeyUtil.generateNumber());
-        order.setStatus(OrderStatus.NEW.getCode()); // 刚创建
+        order.setStatus(UserOrderStatus.NEW.getCode()); // 刚创建
         order.setUserId(userId);
         order.setPhone(phone);
         order.setAddress(address);
@@ -103,8 +103,7 @@ public class UserOrderController {
     @Authorize(role = "3")
     public ResultVO userVerify(@RequestBody(required = true)Map<String,Object> map) {
         String number = map.get("number").toString();
-
-        userOrderDao.updateStatusByNumber(OrderStatus.DE_UNRECEIVE.getCode(), number);
+        userOrderDao.updateStatusByNumber(UserOrderStatus.DE_UNRECEIVE.getCode(), number);
         log.info(">>>物资单确认 用户已确认发出");
         return ResultVOUtil.success();
     }
@@ -116,7 +115,7 @@ public class UserOrderController {
     public ResultVO designVerify(@RequestBody(required = true)Map<String,Object> map) {
         String number = map.get("number").toString();
 
-        userOrderDao.updateStatusByNumber(OrderStatus.DE_RECEIVE.getCode(), number);
+        userOrderDao.updateStatusByNumber(UserOrderStatus.DE_RECEIVE.getCode(), number);
         log.info(">>>物资单确认 调配站已确认收到");
         return ResultVOUtil.success();
     }
@@ -125,13 +124,18 @@ public class UserOrderController {
     @GetMapping("/list")
     @ApiOperation(value = "我的物资单列表")
     @Authorize(role = "3")
-    public ResultVO getOrderList() {
-        // todo 获取token
-        String token = "";
+    public ResultVO getOrderList(@RequestParam("token")String token) {
         int userId = userDao.findByToken(token).getId();
         List<UserOrder> rows = userOrderDao.findByUser(userId);
         log.info(">>>物资单列表 获取成功");
         return ResultVOUtil.success(rows);
+    }
+
+    @ResponseBody
+    @GetMapping("/resource_detail")
+    @ApiOperation(value = "获取物资单资源信息")
+    public ResultVO getOrderRes(@RequestParam("number")String number) {
+        
     }
 
     @ResponseBody

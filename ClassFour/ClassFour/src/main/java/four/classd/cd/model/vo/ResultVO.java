@@ -12,6 +12,5 @@ public class ResultVO<T> {
 
     private Integer code;
     private String message;
-    private boolean success;
     private T data;
 }

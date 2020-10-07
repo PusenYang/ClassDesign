@@ -47,7 +47,7 @@ public class KeyUtil {
      * @return
      */
     public static String generateToken() {
-        return generateStr2(8);
+        return generateStr2(12);
     }
 
     /**

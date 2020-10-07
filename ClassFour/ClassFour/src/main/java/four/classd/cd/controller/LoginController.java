@@ -97,11 +97,11 @@ public class LoginController {
     @PostMapping("/login_admin")
     @ApiOperation(value = "管理员登录接口", notes = "通过flag字段区分不同的角色")
     public ResultVO loginAdmin(@RequestBody(required = false)Map<String, Object> map, HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = servletRequestAttributes.getRequest();
-        System.out.println(request.getContentType());
-        System.out.println(request.getRequestURL());
+//        response.setHeader("Access-Control-Allow-Origin", "*");
+//        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+//        HttpServletRequest request = servletRequestAttributes.getRequest();
+//        System.out.println(request.getContentType());
+//        System.out.println(request.getRequestURL());
         /* 参数获取 */
         String username = map.get("username").toString();
         String password = map.get("password").toString();
@@ -124,6 +124,7 @@ public class LoginController {
         // 登录成功之后，更新token, 并返回
         String token = KeyUtil.generateToken();
         adminDao.updateToken(username, token);
+        log.info(">>>管理员登录成功："+username);
         return ResultVOUtil.success(token);
     }
 
@@ -156,6 +157,7 @@ public class LoginController {
         // 登录成功之后，更新token, 并返回
         String token = KeyUtil.generateToken();
         designStationManagerDao.updateToken(username, token);
+        log.info(">>>调配站负责人登录成功："+username);
         return ResultVOUtil.success(token);
     }
 
@@ -172,6 +174,7 @@ public class LoginController {
         // 登录成功之后，更新token, 并返回
         String token = KeyUtil.generateToken();
         receiveStationManagerDao.updateToken(username, token);
+        log.info(">>>接收站负责人登录成功："+username);
         return ResultVOUtil.success(token);
     }
 
@@ -188,6 +191,7 @@ public class LoginController {
         // 登录成功之后，更新token, 并返回
         String token = KeyUtil.generateToken();
         userDao.updateToken(username, token);
+        log.info(">>>个人用户登录成功："+username);
         return ResultVOUtil.success(token);
     }
 }

@@ -16,7 +16,6 @@ public class ResultVOUtil {
      */
     public static ResultVO success() {
         ResultVO resultVO = new ResultVO();
-        resultVO.setSuccess(true);
         resultVO.setCode(ExceptionType.SUCCESS.getCode());
         resultVO.setMessage(ExceptionType.SUCCESS.getMsg());
         return resultVO;
@@ -30,7 +29,6 @@ public class ResultVOUtil {
     public static ResultVO success(Object object) {
         ResultVO resultVO = new ResultVO();
         resultVO.setData(object);
-        resultVO.setSuccess(true);
         resultVO.setCode(ExceptionType.SUCCESS.getCode());
         resultVO.setMessage(ExceptionType.SUCCESS.getMsg());
         return resultVO;
@@ -38,7 +36,6 @@ public class ResultVOUtil {
 
     public static ResultVO success(Integer code, String message) {
         ResultVO resultVO = new ResultVO();
-        resultVO.setSuccess(true);
         resultVO.setCode(code);
         resultVO.setMessage(message);
         return resultVO;
@@ -55,7 +52,6 @@ public class ResultVOUtil {
         ResultVO resultVO = new ResultVO();
         resultVO.setData(object);
         resultVO.setCode(code);
-        resultVO.setSuccess(true);
         resultVO.setMessage(message);
         return resultVO;
     }
@@ -69,7 +65,6 @@ public class ResultVOUtil {
     public static ResultVO error(Integer code, String message) {
         ResultVO resultVO = new ResultVO();
         resultVO.setCode(code);
-        resultVO.setSuccess(false);
         resultVO.setMessage(message);
         return resultVO;
     }

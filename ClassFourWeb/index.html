@@ -51,7 +51,8 @@
                 <li class="layui-nav-item layui-hide-xs" lay-unselect><a href="javascript:;" onclick="admin_login()" title="管理员入口">
                     <i class="fa fa-wheelchair fa-lg"></i></a></li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;"><img src="./images/avatar_user.jpg" class="layui-nav-img"><span>pusen</span></a>
+                    <a href="javascript:;"><img id="users_avatar" src="./images/logo_diao.png" class="layui-nav-img">
+                        <span id="users_name">未登录</span></a>
                     <dl class="layui-nav-child">                      
                         <dd lay-unselect><a href="./login.html"><i class="fa fa-sign-out fa-fw"></i>退出</a></dd>
                     </dl>
@@ -277,26 +278,56 @@
         </div>
         <script type="text/javascript" src="./lib/layui/lay/modules/form.js"></script>
     </div>
-    
-
-    <script>
-        //注意：element未作封装处理，使用layui.use引用
-        layui.use(['element'], function () {
-            var element = layui.element;
-            console.log('触发了layui.element');
-            
-        });
-        
-        function admin_login(){
-            window.open("login_admin.html")
-        }
-    </script>
-
-    <script type="text/javascript" src="./lib/admin/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="./lib/Scrollbar/jquery.scrollBar.js"></script>
-    <!-- 请求进度条插件 -->
-    <script src='./lib/nprogress/nprogress.js'></script>
-    
 </body>
+
+<script>
+
+    // 获取头像和用户名
+    window.onload = function() {
+        var token = document.cookie.split(";")[0];
+        if (token.length < 2) return;
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:8000/rds1123/info/avatar_name",
+            data: {
+                "token": token
+            },
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+            // cache: true,
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                document.getElementById("users_avatar").src=result.data[0];
+                document.getElementById("users_name").innerText=result.data[1];
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                
+            },
+            complete: function () {
+        
+            }
+        });
+    }
+
+    //注意：element未作封装处理，使用layui.use引用
+    layui.use(['element'], function () {
+        var element = layui.element;
+        console.log('触发了layui.element');
+        
+    });
+    
+    function admin_login(){
+        window.open("login_admin.html")
+    }
+</script>
+
+<script type="text/javascript" src="./lib/admin/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="./lib/Scrollbar/jquery.scrollBar.js"></script>
+<!-- 请求进度条插件 -->
+<script src='./lib/nprogress/nprogress.js'></script>
 
 </html>

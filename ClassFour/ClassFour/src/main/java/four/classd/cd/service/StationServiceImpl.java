@@ -4,13 +4,11 @@ import four.classd.cd.dao.DesignStationDao;
 import four.classd.cd.dao.ReceiveStationDao;
 import four.classd.cd.model.entity.DesignStation;
 import four.classd.cd.model.entity.ReceiveStation;
-import four.classd.cd.model.entity.Resource;
 import four.classd.cd.model.enums.ResourceType;
 import four.classd.cd.util.GaodeMapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,7 +33,7 @@ public class StationServiceImpl implements StationService {
     @Override
     public List<ReceiveStation> getNearStation(int designStationId) {
         DesignStation designStation = designStationDao.findById(designStationId);
-        List<ReceiveStation> stationAll = receiveStationDao.findAll();
+        List<ReceiveStation> stationAll = receiveStationDao.findAlls();
         for (ReceiveStation rs : stationAll) {
             rs.setDistance(GaodeMapUtil.getDistance(designStation.getAddress(), rs.getAddress()));
         }

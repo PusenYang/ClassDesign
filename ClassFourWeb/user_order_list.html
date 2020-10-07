@@ -22,12 +22,7 @@
     <div class="layui-fluid">
         <div class="layui-card">
             <div class="layui-card-header">
-                <i class="fa fa-file-text fa-fw"></i>物资单列表
-                <span class="layui-layout-right">
-                    <a href="javascript:;" hg-event="fullscreen">
-                        <i class="layui-icon layui-icon-screen-full"></i>
-                    </a>
-                </span>
+                <p style="text-align:center;font-size:large">物资单列表</p>
             </div>
             <div class="layui-card-body">
                 <div class="layui-form">
@@ -35,26 +30,28 @@
                         <!-- 地址选择框 -->                      
                         <div class="layui-inline">
                             <select name="quiz1">
-                                <option value="">物资单状态</option>
-                                <option value="all">全部</option>
-                                <option value="浙江">已创建</option>
-                                <option value="你的工号">运往调配站</option>
-                                <option value="你最喜欢的老师">调配站已接收</option>
-                                <option value="你的工号">运往接收站</option>
-                                <option value="你最喜欢的老师">接收站已确认</option>
+                                <option value="0">物资单状态</option>
+                                <option value="0">全部</option>
+                                <option value="1">已创建代收取</option>
+                                <option value="2">运往调配站</option>
+                                <option value="3">调配站已收取</option>
+                                <option value="4">运往接收站</option>
+                                <option value="5">接收站已确认</option>
                             </select>
                         </div>
                         <div class="layui-inline">
                             <select name="quiz1">
-                                <option value="">目标站省份</option>
-                                <option value="浙江">全部</option>
-                                <option value="你的工号">江西省</option>
-                                <option value="你最喜欢的老师">福建省</option>
+                                <option value="0">目标站省份</option>
+                                <option value="0">全部</option>
+                                <option value="湖南省">湖南省省</option>
+                                <option value="河南省">河南省</option>
+                                <option value="湖北省">湖北省</option>
+                                <option value="江西省">江西省</option>
+                                <option value="安徽省">安徽省</option>
                             </select>
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <button class="layui-btn layui-btn-sm layui-btn-normal" lay-submit lay-filter="sreach"><i
-                                    class="layui-icon layui-icon-sm">&#xe615;</i></button>
+                            <button onclick="get_order_list" class="layui-btn layui-btn-sm layui-btn-normal" ><i class="layui-icon layui-icon-sm">&#xe615;</i></button>
                         </div>
                     </div>
                 </div>
@@ -64,9 +61,19 @@
     </div>
 </body>
 <script>
+
+    function get_order_list() {
+
+    }
+
+    var global_data;
+    // 确认物资已发出
+    function verify_sent(obj, field) {
+
+    }
     //查看物资单详情
-    function depts(obj, field) {
-        console.log(field); //点击的单元格
+    function get_info(obj, field) {
+        console.log(field); 
         hg.msg(JSON.stringify(obj.data));
     }
     
@@ -74,19 +81,20 @@
         { field: 'number', width: '10%', title: '单号'}, 
         { field: 'totalAmount', width: '10%', title: '物资总数(个)' }, 
         { field: 'totalWeight', width: '10%', title: '物资总重(克)' }, 
-        { field: 'theDate', title: '收取日期', width: '15%'}, 
-        { field: 'designName', title: '目标调配站',width: '20%'},
-        { field: 'disignAddress', title: '调配站地址', width: '20%'}, 
+        { field: 'createTime', title: '创建日期', width: '10%'}, 
+        { field: 'theDate', title: '收取日期', width: '10%'}, 
+        { field: 'designName', title: '目标调配站',width: '15%'},
+        { field: 'disignAddress', title: '调配站地址', width: '15%'}, 
         { field: 'status', title: '状态',width: '10%'},
         {
             field: 'right', width: '15%', title: '操作', templet: function (d) {
-                return '<a class="layui-btn layui-btn-xs" lay-event="edit">查看详情</a> <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">确认发出</a>'
+                return '<a class="layui-btn layui-btn-xs" lay-event="get_info">查看详情</a> <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="verify_sent">确认发出</a>'
             }
         }
     ]
     ];
     //基本数据表格
-   var table = hg.table.datatable('test', '用户管理', 'data1.json', {}, tableCols, '', false, 'full-180');
+   var table = hg.table.datatable('test', '用户管理', global_data, {}, tableCols, '', false, 'full-180');
    table.onrowclick(function(obj) {
         console.log(obj);
         console.log('行单击事件');

@@ -30,7 +30,7 @@
                         <dd lay-unselect>
                             <a onclick="hg.open('调配站地图','station_list_map.html','','',true)">
                                 <div class="layui-btn-container">
-                                    <button class="layui-btn layui-btn-sm">调配站地图</button>
+                                    <button class="layui-btn layui-btn-sm">站点地图</button>
                                 </div>
                             </a>
                         <dd lay-unselect>
@@ -38,17 +38,20 @@
                     <div class="layui-form-item">
                         <!-- 地址选择框 -->                      
                         <div class="layui-inline">
-                            <select name="quiz1">
-                                <option value="all">全部</option>
-                                <option value="浙江">浙江省</option>
-                                <option value="你的工号">江西省</option>
-                                <option value="你最喜欢的老师">福建省</option>
+                            <select name="quiz1" id="province_select">
+                                <option value="">全部</option>
+                                <option value="湖南省">湖南省</option>
+                                <option value="江西省">江西省</option>
+                                <option value="湖北省">湖北省</option>
+                                <option value="河南省">河南省</option>
+                                <option value="安徽省">安徽省</option>
+
                             </select>
                         </div>
                         
                         <!-- 搜索按钮 -->
                         <div class="layui-inline layui-show-xs-block">
-                            <button class="layui-btn layui-btn-sm layui-btn-normal" lay-submit lay-filter="sreach"><i class="layui-icon layui-icon-sm">&#xe615;</i>
+                            <button onclick="get_design_station()" class="layui-btn layui-btn-sm layui-btn-normal" lay-submit lay-filter="sreach"><i class="layui-icon layui-icon-sm">&#xe615;</i>
                             </button>
                         </div>
                         
@@ -59,31 +62,121 @@
         </div>
     </div>
 </body>
+
 <script>
+    var global_data;
+    function get_design_station() {
+        var select = document.getElementById("province_select");
+        var idx = select.selectedIndex;
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:8000/rds1123/d_station/list",
+            data: {
+                "province": select.options[idx].value
+            },
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+            // cache: true,
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                global_data = result.data;
+                var table = hg.table.datatable('test', '用户管理', global_data, {}, tableCols, '', false, 'full-180');
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                window.location.href = "./404.html";
+            },
+            complete: function () {
+        
+            }
+        });
+    }
+
+    // $(document).ready(function() {
+    //     $.ajax({
+    //         type: "GET",
+    //         url: "http://127.0.0.1:8000/rds1123/position/province",
+    //         data: "",
+    //         dataType: "json",
+    //         contentType: "application/json;charset=utf-8",
+    //         async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+    //         // cache: true,
+    //         timeout: 5000,
+    //         success: function (result) {
+    //             if (result.code != 0) {
+    //                 alert(result.message);
+    //             }
+    //             var data = result.data;
+    //             var sel = document.getElementById("province_select");
+    //             for (var i in data) {
+    //                 alert(data[i]);
+    //                 var option = document.createElement("option");
+    //                 sel.append('<option value='+data[i]+'>'+data[i]+'</option>');
+    //                 alert(sel.innerHTML);
+    //             }
+    //             layui.use('form',function(){
+	// 				var form=layui.form;
+	// 				form.render("select");
+	// 			})
+    //         },
+    //         error: function (XMLHttpRequest, textStatus, errorThrown) {
+    //             window.location.href = "./404.html";
+    //         },
+    //         complete: function () {
+        
+    //         }
+    //     });
+    // });
     
     //查看物资资源
     function depts(obj, field) {
-        console.log(field); //点击的单元格
-        hg.msg("jdlas"); // 发送一次请求，获取这个站点的物资资源
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:8000/rds1123/d_station/resource",
+            data: {
+                "did": JSON.stringify(obj.data.id)
+            },
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+            // cache: true,
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                hg.msg(JSON.stringify(result.data));
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                hg.msg(JSON.stringify("查看失败"));
+            },
+            complete: function () {
+        
+            }
+        });
     }
     
     var tableCols = [[
         { field: 'id', width: '10%', title: '站点ID'}, 
         { field: 'name', width: '15%', title: '站点名称', style: 'color: #ff5722;' }, 
-        { field: 'province', width: '10%', title: '省份'}, 
-        { field: 'city', title: '城市', width: '10%'}, 
+        { field: 'province', width: '7.5%', title: '省份'}, 
+        { field: 'city', title: '城市', width: '7.5%'}, 
         { field: 'address', width: '20%', title: '详细地址'}, 
         { field: 'managerName', width: '10%', title: '负责人'}, 
-        { field: 'managerPhone', width: '15%', title: '联系电话' },
+        { field: 'managerPhone', width: '10%', title: '联系电话' },
+        { field: 'createTime', width: '10%', title: '创建时间' },
         { 
-            field: 'wealth', width: '15%', title: '详情', templet: function (d) {
+            field: 'wealth', width: '10%', title: '详情', templet: function (d) {
                 return '<span><a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="depts">查看</a></span>'
             }
         }
     ]
     ];
     //基本数据表格
-   var table = hg.table.datatable('test', '用户管理', 'data1.json', {}, tableCols, '', false, 'full-180');
+   var table = hg.table.datatable('test', '用户管理', global_data, {}, tableCols, '', false, 'full-180');
    table.onrowclick(function(obj) {
         console.log(obj);
         console.log('行单击事件');

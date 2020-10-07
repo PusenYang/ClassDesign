@@ -39,28 +39,43 @@
      function do_login() {
         var username = document.getElementById("username").value;
         var password = $("#password").val();
-        alert(username+password);
+        // alert(username+password);
         $.ajax({
             type: "POST",
             url: "http://127.0.0.1:8000/rds1123/login_admin",
             data: JSON.stringify({
-                "username": "admin", 
-                "password": "admin"
+                "username": username, 
+                "password": password
             }),
             dataType: "json",
             contentType: "application/json;charset=utf-8",
             async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
             // cache: true,
             timeout: 5000,
-            success: function (data) {
-                alert("success: "+data);
+            success: function (result) {
+                // var obj;
+                //判断是否是json格式
+                // if((typeof result=='object') && result.constructor==Object){
+                //     obj = result;
+                // } else {
+                //     alert("eval");
+                //     obj  = eval("("+result+")");
+                // }
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                document.cookie = result.data;
+                window.location.href = "./admin_manage.html";
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("请求对象XMLHttpRequest: "+XMLHttpRequest.responseText);
-			    alert("错误类型textStatus: "+textStatus);
-			    alert("异常对象errorThrown: "+errorThrown);
+                window.location.href = "./404.html";
+                // alert("请求对象XMLHttpRequest: "+XMLHttpRequest.responseText);
+			    // alert("错误类型textStatus: "+textStatus);
+			    // alert("异常对象errorThrown: "+errorThrown);
             },
-            complete: function () {}
+            complete: function () {
+        
+            }
         });
      }
   </script>

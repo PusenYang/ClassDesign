@@ -1,6 +1,5 @@
 package four.classd.cd.model.entity;
 
-import four.classd.cd.model.enums.OrderStatus;
 import lombok.Data;
 
 import java.util.List;

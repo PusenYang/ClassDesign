@@ -16,11 +16,7 @@
     <script type="text/javascript" src="../../lib/Scrollbar/jquery.scrollBar.js"></script>
     <script type="text/javascript" src="../../lib/layui/layui.js"></script>
     <script type="text/javascript" src="../../lib/admin/admin.js"></script>
-    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
-    <!--[if lt IE 9]>
-          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
+    <script type="text/javascript" src="./js/jquery-1.12.4.min.js"></script>
     <style>
 
     </style>
@@ -39,11 +35,11 @@
                 <div class="layui-inline">
                   <label class="layui-form-label">角色选择</label>
                   <div class="layui-input-inline">
-                    <select name="quiz">
+                    <select name="quiz" id="role_select">
                       <option value="">请选择</option>
-                      <option value="个人用户">个人用户</option>
-                      <option value="调配站负责人">调配站负责人</option>
-                      <option value="接收站负责人">接收站负责人</option>
+                      <option value="3">个人用户</option>
+                      <option value="1">调配站负责人</option>
+                      <option value="2">接收站负责人</option>
                     </select>
                   </div>
                 </div>
@@ -65,33 +61,33 @@
               <div class="layui-inline">
                 <label class="layui-form-label">用户名</label>
                 <div class="layui-input-inline">
-                  <input type="text" name="number" lay-verify="required|number" autocomplete="off" class="layui-input">
+                  <input type="text" id="username" autocomplete="off" class="layui-input">
                 </div>
               </div>
               <div class="layui-inline">
                 <label class="layui-form-label">密码</label>
                 <div class="layui-input-inline">
-                  <input type="password" name="number" lay-verify="required|number" autocomplete="off" class="layui-input">
+                  <input type="password" id="password" autocomplete="off" class="layui-input">
                 </div>
               </div>
               <div class="layui-inline">
                 <label class="layui-form-label">确认密码</label>
                 <div class="layui-input-inline">
-                  <input type="password" name="number" lay-verify="required|number" autocomplete="off" class="layui-input">
+                  <input type="password" id="password2" autocomplete="off" class="layui-input">
                 </div>
               </div>
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label">联系电话</label>
               <div class="layui-input-block">
-                <input type="text" name="identity" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+                <input type="text" id="contact_phone" placeholder="" autocomplete="off" class="layui-input">
               </div>
           </div>
 
             <div class="layui-form-item">
                 <label class="layui-form-label">个人地址</label>
                 <div class="layui-input-block">
-                  <input type="text" name="identity" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+                  <input type="text" id="person_address" placeholder="" autocomplete="off" class="layui-input">
                 </div>
             </div>
 
@@ -101,21 +97,21 @@
             <div class="layui-form-item">
               <label class="layui-form-label">验证身份证</label>
               <div class="layui-input-block">
-                <input type="text" name="identity" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+                <input type="text" id="id_card" placeholder="" autocomplete="off" class="layui-input">
               </div>
             </div>
 
             <div class="layui-form-item">
                 <label class="layui-form-label">站点名称</label>
                 <div class="layui-input-block">
-                  <input type="text" name="identity" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+                  <input type="text" id="station_name" placeholder="" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">选择站点地址</label>
                 <div class="layui-input-block">
                   <div class="layui-inline">
-                    <select name="quiz1">
+                    <select name="quiz1" id="province_select">
                       <option value="">请选择省</option>
                       <option value="浙江" selected="">浙江省</option>
                       <option value="你的工号">江西省</option>
@@ -123,7 +119,7 @@
                     </select>
                   </div>
                   <div class="layui-inline">
-                    <select name="quiz2">
+                    <select name="quiz2" id="city_select">
                       <option value="">请选择市</option>
                       <option value="杭州">杭州</option>
                       <option value="宁波" disabled="">宁波</option>
@@ -133,7 +129,7 @@
                     </select>
                   </div>
                   <div class="layui-inline">
-                    <select name="quiz3">
+                    <select name="quiz3" id="county_select">
                       <option value="">请选择县/区</option>
                       <option value="西湖区">西湖区</option>
                       <option value="余杭区">余杭区</option>
@@ -145,7 +141,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">站点详细地址</label>
                 <div class="layui-input-block">
-                  <input type="text" name="identity" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+                  <input type="text" id="station_address" placeholder="" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item layui-form-text">
@@ -158,13 +154,13 @@
             <div class="layui-form-item layui-form-text">
               <label class="layui-form-label">备注</label>
               <div class="layui-input-block">
-                <textarea name="text" placeholder="请输入内容" class="layui-textarea"></textarea>
+                <textarea id="station_remark" placeholder="请输入内容" class="layui-textarea"></textarea>
               </div>
             </div>        
             <div class="layui-form-item layui-layout-admin">
               <div class="layui-input-block">
                 <div class="layui-footer" style="left: 0;padding: 10px 0;text-align: center;background-color: #fff;">
-                  <button class="layui-btn" lay-submit="" lay-filter="component-form-demo1">提交申请</button>
+                  <button class="layui-btn" type="button" onclick="do_register()" >提交申请</button>
                   <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
               </div>
@@ -174,29 +170,131 @@
       </div>
     </div>
 </body>
+
 <script>
-  // 自定义验证规则
-  hg.form.verify({
-    title: function(value){
-      if(value.length < 5){
-        return '标题至少得5个字符啊';
-      }
+    var image_url = "";
+
+    /**
+     * 暂未对输入的参数做校验
+     */
+    function do_register() {
+        // 判断角色
+        var select = document.getElementById("role_select");
+        var idx = select.selectedIndex;
+        var role = select.options[idx].value;
+        
+        if (role == "3") {
+            alert(username + username.length);
+            do_user_register();
+        }
+        else if (role == "1") do_station_register("http://127.0.0.1:8000/rds1123/register/design_manager");
+        else if (role == "2") do_station_register("http://127.0.0.1:8000/rds1123/register/receive_manager");
+        else alert("请先选择角色 ！");
     }
-    ,pass: [/(.+){6,12}$/, '密码必须6到12位']
-    ,content: function(value){
-      layedit.sync(editIndex);
+
+    function do_user_register() {
+        
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:8000/rds1123/register/user",
+            data: JSON.stringify({
+                "username": document.getElementById("username").value,
+                "password": document.getElementById("password").value,
+                "password2": document.getElementById("password2").value,
+                "phone": document.getElementById("contact_phone").value,
+                "address": document.getElementById("person_address").value
+            }),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+            // cache: true,
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                window.location.href = "./login.html";
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("注册失败 ！")
+            },
+            complete: function () {
+        
+            }
+        });
     }
-  });
-  // 监听switch操作事件
-  hg.form.onswitch('component-form-switchTest',function(data){
-      hg.msg(data.elem.name+'开关checked：'+(data.elem.checked?'开启':'禁用'));
-      console.log(data.elem.checked);
-      console.log(data.othis);
-      layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis);
-  });
-  // 监听表单提交事件
-  hg.form.onsubmit('component-form-demo1', function (data) {
-      hg.msg(JSON.stringify(data));
+
+    function do_station_register(url) {
+        alert("进入87908方法");
+        var province_select = document.getElementById("province_select");
+        var province_idx = province_select.selectedIndex;
+        var station_province = province_select.options[province_idx].value;
+        
+        var city_select = document.getElementById("city_select");
+        var city_idx = city_select.selectedIndex;
+        var station_city = city_select.options[city_idx].value;
+
+        var county_select = document.getElementById("county_select");
+        var county_idx = county_select.selectedIndex;
+        var station_county = county_select.options[county_idx].value;
+
+        if (image_url.length < 2){
+            alert("请先上传资格凭证 ！");
+            return;
+        } 
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: JSON.stringify({
+                "username": document.getElementById("username").value,
+                "password": document.getElementById("password").value,
+                "password2": document.getElementById("password2").value,
+                "phone": document.getElementById("contact_phone").value,
+                "id_card": document.getElementById("id_card").value,
+                "station_name": document.getElementById("station_name").value,
+                "station_address": document.getElementById("station_address").value,
+                "station_remark": document.getElementById("station_remark").value,
+                "station_image": image_url,
+                "station_province": station_province,
+                "station_city": station_city,
+                "station_county": station_county
+            }),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+            // cache: true,
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                window.location.href = "./login.html";
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("注册失败 ！")
+            },
+            complete: function () {
+        
+            }
+        });
+    }
+
+    // 图片上传
+    layui.use(['element', 'upload'], function () {
+      var element = layui.element,
+      upload = layui.upload;
+      
+      //拖拽上传
+      upload.render({
+        elem: '#test-upload-drag'
+        ,url: 'http://127.0.0.1:8000/rds1123/register/image'
+        ,done: function(res){
+            image_url = res.data;
+            alert("上传成功 ！");
+        }
+      });
+      
   });
 </script>
 

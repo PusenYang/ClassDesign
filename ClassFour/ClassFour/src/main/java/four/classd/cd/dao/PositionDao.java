@@ -19,4 +19,7 @@ public interface PositionDao {
 
     @Select({"select * from",POSITION_TABLE,})
     List<Position> findAll();
+
+    @Select({"select province from",POSITION_TABLE,})
+    List<String> findAllProvince();
 }

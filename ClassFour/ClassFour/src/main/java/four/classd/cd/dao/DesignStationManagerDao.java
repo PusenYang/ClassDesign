@@ -18,7 +18,7 @@ public interface DesignStationManagerDao {
     static String INSERT_FIELD = "id, username, password, salt, phone, id_card, station_id, avatar,create_time";
 
     // 添加负责人
-    @Insert({"insert into",DSM_TABLE,"(",INSERT_FIELD,") values(#{id},#{username},#{password},#{salt},#{phone},#{idCard},#{stationId},#{avatar},,#{createTime})"})
+    @Insert({"insert into",DSM_TABLE,"(",INSERT_FIELD,") values(#{id},#{username},#{password},#{salt},#{phone},#{idCard},#{stationId},#{avatar},#{createTime})"})
     Integer addManager(DesignStationManager manager);
 
     @Update({"update",DSM_TABLE,"set token = #{token} where username = #{username}"})

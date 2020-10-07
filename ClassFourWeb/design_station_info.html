@@ -32,26 +32,26 @@
               <fieldset class="layui-elem-field">
                 <legend>站点名称</legend>
                 <div class="layui-field-box">
-                  <p style="text-align:left;font-size:medium">个人信息</p>
+                  <p id="info_name" style="text-align:left;font-size:medium;font-weight: 200;">默认</p>
                 </div>
               </fieldset>
               <fieldset class="layui-elem-field">
                 <legend>所在位置</legend>
                 <div class="layui-field-box">
-                  <p style="text-align:left;font-size:medium">个人信息</p>
+                  <p id="info_address" style="text-align:left;font-size:medium;font-weight: 200;">默认</p>
                 </div>
               </fieldset>
               <fieldset class="layui-elem-field">
                 <legend>资格认证</legend>
                 <div class="layui-field-box">
-                    <p style="text-align:center;font-size:medium"><img src="/images/bg.png"  width="80" height="80"></p>
+                    <p style="text-align:center"><img id="info_image" src="/images/logo_diao.png"  width="80" height="80"></p>
                 </div>
               </fieldset>
               <fieldset class="layui-elem-field">
                 <legend>负责人</legend>
                 <div class="layui-field-box">
-                  <p style="text-align:left;font-size:medium">名字</p>
-                  <p style="text-align:left;font-size:medium">电话</p>
+                  <p id="info_username" style="text-align:left;font-size:medium;font-weight: 200;">默认</p>
+                  <p id="info_phone" style="text-align:left;font-size:medium;font-weight: 200;">默认</p>
                 </div>
               </fieldset>
               
@@ -61,7 +61,42 @@
       </div>
     </div>
 </body>
+
 <script>
+
+  window.onload = function() {
+      var token = document.cookie.split(";")[0];
+      if (token.length < 2) return;
+      $.ajax({
+          type: "GET",
+          url: "http://127.0.0.1:8000/rds1123/info/d_station",
+          data: {
+              "token": token
+          },
+          dataType: "json",
+          contentType: "application/json;charset=utf-8",
+          async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+          // cache: true,
+          timeout: 5000,
+          success: function (result) {
+              if (result.code != 0) {
+                  alert(result.message);
+              }
+              document.getElementById("info_name").innerText=result.data[0];
+              document.getElementById("info_address").innerText=result.data[1];
+              document.getElementById("info_image").src=result.data[2];
+              document.getElementById("info_username").innerText=result.data[3];
+              document.getElementById("info_phone").innerText=result.data[4];
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+              alert("获取站点信息失败 ！");
+          },
+          complete: function () {
+      
+          }
+      });
+  }
+
   layui.use('element', function () {
       var element = layui.element;
   });

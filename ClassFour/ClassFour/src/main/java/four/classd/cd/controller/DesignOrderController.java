@@ -2,11 +2,10 @@ package four.classd.cd.controller;
 
 import four.classd.cd.annotation.Authorize;
 import four.classd.cd.config.SwaggerConfig;
-import four.classd.cd.constant.RoleConstant;
 import four.classd.cd.dao.*;
 import four.classd.cd.model.entity.*;
 import four.classd.cd.model.enums.ExceptionType;
-import four.classd.cd.model.enums.OrderStatus;
+import four.classd.cd.model.enums.UserOrderStatus;
 import four.classd.cd.model.vo.ResultVO;
 import four.classd.cd.service.StationService;
 import four.classd.cd.util.KeyUtil;
@@ -99,7 +98,7 @@ public class DesignOrderController {
         DesignOrder designOrder = new DesignOrder();
         designOrder.setId(KeyUtil.generateOrdID());
         designOrder.setNumber(KeyUtil.generateNumber());
-        designOrder.setStatus(OrderStatus.GOING.getCode());
+        designOrder.setStatus(UserOrderStatus.GOING.getCode());
         // designOrder.setDesignManagerId();
         // designOrder.setDesignManagerName();
         // designOrder.setDesignManagerPhone();
@@ -136,7 +135,7 @@ public class DesignOrderController {
     @Authorize(role = "2")
     public ResultVO userVerify(@RequestBody(required = true)Map<String,Object> map) {
         String number = map.get("number").toString();
-        designOrderDao.updateStatusByNumber(OrderStatus.FINAL_RECEIVE.getCode(), number);
+        designOrderDao.updateStatusByNumber(UserOrderStatus.FINAL_RECEIVE.getCode(), number);
         log.info(">>>调配单确认 接收站已确认收到");
         return ResultVOUtil.success();
     }
@@ -150,7 +149,7 @@ public class DesignOrderController {
     @Authorize(role = "1")
     public ResultVO designVerify(@RequestBody(required = true)Map<String,Object> map) {
         String number = map.get("number").toString();
-        designOrderDao.updateStatusByNumber(OrderStatus.GOING.getCode(), number);
+        designOrderDao.updateStatusByNumber(UserOrderStatus.GOING.getCode(), number);
         log.info(">>>调配单确认 调配站已确认发出");
         return ResultVOUtil.success();
     }

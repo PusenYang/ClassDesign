@@ -2,11 +2,9 @@ package four.classd.cd.controller;
 
 import four.classd.cd.annotation.Authorize;
 import four.classd.cd.config.SwaggerConfig;
-import four.classd.cd.constant.RoleConstant;
 import four.classd.cd.dao.AdminDao;
 import four.classd.cd.dao.DesignStationDao;
 import four.classd.cd.dao.ReceiveStationDao;
-import four.classd.cd.model.enums.ExceptionType;
 import four.classd.cd.model.enums.StationStatus;
 import four.classd.cd.model.vo.ResultVO;
 import four.classd.cd.service.AdminService;
@@ -57,7 +55,7 @@ public class AdminController {
         }
         else {
             log.info(">>>所有接收站 获取成功");
-            return ResultVOUtil.success(receiveStationDao.findAll());
+            return ResultVOUtil.success(receiveStationDao.findAlls());
         }
     }
 
@@ -76,7 +74,7 @@ public class AdminController {
         }
         else {
             log.info(">>>所有调配站 获取成功");
-            return ResultVOUtil.success(designStationDao.findAll());
+            return ResultVOUtil.success(designStationDao.findAlls());
         }
     }
 

@@ -8,7 +8,6 @@ import four.classd.cd.dao.ReceiveStationDao;
 import four.classd.cd.model.entity.DesignStation;
 import four.classd.cd.model.entity.ReceiveStation;
 import four.classd.cd.model.enums.StationStatus;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public PageInfo<DesignStation> findAllDesign(int pageNum, int size) {
         Page<DesignStation> p = PageHelper.startPage(pageNum, size);
-        designStationDao.findAll();
+        designStationDao.findAlls();
         return new PageInfo<>(p);
     }
 
@@ -60,7 +59,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public PageInfo<ReceiveStation> findAllReceive(int pageNum, int size) {
         Page<ReceiveStation> p = PageHelper.startPage(pageNum, size);
-        receiveStationDao.findAll();
+        receiveStationDao.findAlls();
         return new PageInfo<>(p);
     }
 

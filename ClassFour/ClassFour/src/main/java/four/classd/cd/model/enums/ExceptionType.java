@@ -10,8 +10,9 @@ import lombok.Getter;
 @Getter
 public enum  ExceptionType {
 
-    SUCCESS(200,"成功"),
+    SUCCESS(0,"成功"),
     PARAM_ERROR(400,"参数错误"),
+    INFO_NULL(402,"信息为空"),
     AUTHORITY_ERROR(403, "权限不足"),
     SERVER_ERROR(500,"服务器错误")
 

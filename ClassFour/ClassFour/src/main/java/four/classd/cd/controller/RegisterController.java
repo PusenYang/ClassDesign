@@ -2,6 +2,7 @@ package four.classd.cd.controller;
 
 import com.github.pagehelper.util.StringUtil;
 import four.classd.cd.config.SwaggerConfig;
+import four.classd.cd.constant.PathConstant;
 import four.classd.cd.constant.RoleAvatar;
 import four.classd.cd.dao.*;
 import four.classd.cd.model.entity.*;
@@ -15,7 +16,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -27,6 +31,7 @@ import java.util.Map;
 @RequestMapping("/register")
 @Slf4j
 @Api(tags = SwaggerConfig.LOGIN_TAG)
+@CrossOrigin(origins = "*")
 public class RegisterController {
     @Autowired
     private UserDao userDao;
@@ -45,6 +50,27 @@ public class RegisterController {
 
     @Autowired
     private ReceiveStationManagerDao receiveStationManagerDao;
+
+    @PostMapping("/image")
+    @ResponseBody
+    @ApiOperation(value = "图片上传接口")
+    public ResultVO uploadImage(@RequestParam("file") MultipartFile file) {
+        String localName = file.getOriginalFilename(); // 上传文件的真实名称
+        String suffixName = localName.substring(localName.lastIndexOf(".")).toLowerCase();//获取后缀名
+        if (!suffixName.equals(".png") && !suffixName.equals(".jpg") && !suffixName.equals(".jpeg") && !suffixName.equals(".bmp") && !suffixName.equals(".tif")) {
+            log.info(">>>图片上传 不支持的格式："+suffixName);
+            return ResultVOUtil.error(ExceptionType.PARAM_ERROR.getCode(), "不支持的文件的格式");
+        }
+        String savePath = PathConstant.SERVER + KeyUtil.generateUserID() + localName;
+        try {
+            file.transferTo(new File(savePath));
+        } catch (IOException e) {
+            log.info(">>>图片上传 发生错误："+e.toString());
+            return ResultVOUtil.error(ExceptionType.SERVER_ERROR.getCode(), "图片上传发生错误，请稍后重试");
+        }
+        log.info(">>>图片上传 成功");
+        return ResultVOUtil.success(savePath);
+    }
 
     @PostMapping("/user")
     @ResponseBody
@@ -193,7 +219,7 @@ public class RegisterController {
         String password = map.get("password").toString();
         String password2 = map.get("password2").toString();
         String phone = map.get("phone").toString();
-        String avatar = map.get("avatar").toString();
+        String avatar = RoleAvatar.RECEIVE_AVATAR;
         String idCard = map.get("id_card").toString();
 
         String stationName = map.get("station_name").toString();

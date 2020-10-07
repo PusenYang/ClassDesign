@@ -13,4 +13,9 @@ public class VersionTest {
         System.out.println(SpringVersion.getVersion());
         System.out.println(SpringBootVersion.getVersion());
     }
+
+    @Test
+    public void testGetPath() {
+        System.out.println(System.getProperty("user.dir"));
+    }
 }

@@ -52,11 +52,17 @@ public interface ReceiveStationDao {
     String findNameById(@Param("id")int id);
 
     // 根据省份查询站点
+    @Select({"select * from",RS_TABLE,"where status = #{status} and province = #{province}"})
+    List<ReceiveStation> findByProvince(@Param("province")String province, @Param("status")int status);
 
     // 根据市查询站点
 
     // 查询所有站点
+    @Select({"select * from",RS_TABLE,"where status = #{status}"})
+    List<ReceiveStation> findAll(@Param("status")int status);
+
+    // 查询所有站点
     @Select({"select * from",RS_TABLE,})
-    List<ReceiveStation> findAll();
+    List<ReceiveStation> findAlls();
 
 }
