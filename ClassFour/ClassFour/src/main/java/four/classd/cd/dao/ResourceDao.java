@@ -22,6 +22,9 @@ public interface ResourceDao {
     @Insert({"insert into",RESOURCE_TABLE,"(",INSERT_FIELD,") values(#{id},#{typeCode},#{typeName},#{weight},#{image})"})
     Integer addResource(Resource resource);
 
-    @Select({"select weight from",RESOURCE_TABLE,"where type_id = #{typeId}"})
-    int getWeight(@Param("typeId")int typeId);
+    @Select({"select weight from",RESOURCE_TABLE,"where type_code = #{typeId}"})
+    Integer getWeight(@Param("typeId")int typeId);
+
+    @Select({"select image from",RESOURCE_TABLE,"where type_code=#{typeId}"})
+    String getImage(@Param("typeId")int typeId);
 }

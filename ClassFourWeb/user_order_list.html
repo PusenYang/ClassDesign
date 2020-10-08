@@ -29,7 +29,7 @@
                     <div class="layui-form-item">
                         <!-- 地址选择框 -->                      
                         <div class="layui-inline">
-                            <select name="quiz1">
+                            <select name="quiz1" id="status_select">
                                 <option value="0">物资单状态</option>
                                 <option value="0">全部</option>
                                 <option value="1">已创建代收取</option>
@@ -40,7 +40,7 @@
                             </select>
                         </div>
                         <div class="layui-inline">
-                            <select name="quiz1">
+                            <select name="quiz1" id="province_select">
                                 <option value="0">目标站省份</option>
                                 <option value="0">全部</option>
                                 <option value="湖南省">湖南省省</option>
@@ -61,20 +61,128 @@
     </div>
 </body>
 <script>
+    var global_data;
+
+    window.onload = function() {
+        get_order_list();
+    }
 
     function get_order_list() {
-
+        var token = document.cookie.split(";")[0];
+        var select = document.getElementById("province_select");
+        var idx = select.selectedIndex;
+        var select2 = document.getElementById("status_select");
+        var idx2 = select2.selectedIndex;
+        $.ajax({
+            type: "POSt",
+            url: "http://127.0.0.1:8000/rds1123/u_order/list",
+            data: JSON.stringify({
+                "province": select.options[idx].value,
+                "status": select2.options[idx2].value,
+                "token": token
+            }),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+            // cache: true,
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                global_data = result.data;
+                var table = hg.table.datatable('test', '用户管理', global_data, {}, tableCols, '', false, 'full-180');
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                window.location.href = "./404.html";
+            },
+            complete: function () {
+        
+            }
+        });
     }
 
-    var global_data;
     // 确认物资已发出
     function verify_sent(obj, field) {
-
+        var token = document.cookie.split(";")[0];
+        if (token.length < 2) return;
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:8000/rds1123/u_order/user_verify",
+            data: JSON.stringify({
+                "number": obj.data.number,
+                "token": token
+            }),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                hg.msg("确认成功，请在日期中查看结果");
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                hg.msg("确认失败，请稍后重试");
+            },
+            complete: function () {
+        
+            }
+        });
     }
-    //查看物资单详情
+
+    //查看物资单资源
     function get_info(obj, field) {
-        console.log(field); 
-        hg.msg(JSON.stringify(obj.data));
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:8000/rds1123/u_order/resource_detail",
+            data: {
+                "number": obj.data.number
+            },
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                hg.msg(result.data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                hg.msg("查看失败，请稍后重试");
+            },
+            complete: function () {
+        
+            }
+        });
+    }
+
+    // 查看物资单日期信息
+    function get_date(obj, field) {
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:8000/rds1123/u_order/date",
+            data: {
+                "number": obj.data.number
+            },
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                hg.msg(result.data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                hg.msg("查看失败，请稍后重试");
+            },
+            complete: function () {
+            }
+        });
     }
     
     var tableCols = [[
@@ -82,7 +190,11 @@
         { field: 'totalAmount', width: '10%', title: '物资总数(个)' }, 
         { field: 'totalWeight', width: '10%', title: '物资总重(克)' }, 
         { field: 'createTime', title: '创建日期', width: '10%'}, 
-        { field: 'theDate', title: '收取日期', width: '10%'}, 
+        { 
+            field: 'wealth', width: '10%', title: '其他日期', templet: function (d) {
+                return '<span><a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="get_date">查看</a></span>'
+            }
+        },
         { field: 'designName', title: '目标调配站',width: '15%'},
         { field: 'disignAddress', title: '调配站地址', width: '15%'}, 
         { field: 'status', title: '状态',width: '10%'},

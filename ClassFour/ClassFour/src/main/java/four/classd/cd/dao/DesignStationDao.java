@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 public interface DesignStationDao {
 
-    static String DS_TABLE = "class_design.design_station";
+    public static String DS_TABLE = "class_design.design_station";
     static String INSERT_FIELD = "id, name, address, longitude, latitude, province, city, county, image, remark, manager_id, manager_name, manager_phone, status,create_time";
 
     static String DSS_TABLE = "class_design.design_station_resource";
@@ -61,6 +61,9 @@ public interface DesignStationDao {
     // 查询所有站点
     @Select({"select * from",DS_TABLE,})
     List<DesignStation> findAlls();
+
+    @Select({"select * from",DS_TABLE,"where id = #{id} and name=#{name}"})
+    DesignStation findByIdAndName(@Param("id")int id,@Param("name")String name);
 
     @Select({"select * from",DS_TABLE,"where status = #{status}"})
     List<DesignStation> findAll(@Param("status")int status);

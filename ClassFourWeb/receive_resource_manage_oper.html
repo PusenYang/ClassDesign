@@ -43,7 +43,7 @@
         if (token.length < 2) return;
         $.ajax({
             type: "GET",
-            url: "http://127.0.0.1:8000/rds1123/d_station/resource_list",
+            url: "http://127.0.0.1:8000/rds1123/r_station/resource_list",
             data: {
                 "token": token
             },
@@ -73,7 +73,7 @@
         //obj通过行tool修改-lay-event
         var row = obj ? obj : table.getSelected(); 
         if (row) {
-            hg.open('物资校正', './design_resource_manage_oper.html?type='+row.type, 600, 400);
+            hg.open('物资校正', './receive_resource_manage_oper.html?type='+row.type, 600, 400);
         } else {
             hg.msg('请选中一行数据，再操作！');
         }

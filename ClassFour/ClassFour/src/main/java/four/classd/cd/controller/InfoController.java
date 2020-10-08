@@ -82,13 +82,12 @@ public class InfoController {
     @ResponseBody
     @GetMapping("/d_station")
     @ApiOperation(value = "获取调配站信息")
-    @Authorize(role = "1")
     public ResultVO getDesignStation(@RequestParam("token")String token) {
         DesignStationManager dsm = designStationManagerDao.findByToken(token);
         DesignStation ds = designStationDao.findById(dsm.getStationId());
         if (ds == null) {
             log.info(">>>获取调配站信息 未查到："+token);
-            return ResultVOUtil.error(ExceptionType.INFO_NULL.getCode(), "未查到该站点");
+            return ResultVOUtil.error(ExceptionType.INFO_NULL.getCode(), "您不是负责人，所以无法看到信息");
         }
         List<String> list = Stream.of(ds.getName(),ds.getAddress(),ds.getImage(),ds.getManagerName(),ds.getManagerPhone()).collect(toList());
         log.info(">>>获取调配站信息 成功"+token);
@@ -98,19 +97,23 @@ public class InfoController {
     @ResponseBody
     @GetMapping("/r_station")
     @ApiOperation(value = "获取接收站信息")
-    @Authorize(role = "2")
     public ResultVO getReceiveStation(@RequestParam("token")String token) {
         ReceiveStationManager dsm = receiveStationManagerDao.findByToken(token);
         ReceiveStation ds = receiveStationDao.findById(dsm.getStationId());
         if (ds == null) {
             log.info(">>>获取接收站信息 未查到："+token);
-            return ResultVOUtil.error(ExceptionType.INFO_NULL.getCode(), "未查到该站点");
+            return ResultVOUtil.error(ExceptionType.INFO_NULL.getCode(), "您不是负责人，所以无法看到信息");
         }
         List<String> list = Stream.of(ds.getName(),ds.getAddress(),ds.getImage(),ds.getManagerName(),ds.getManagerPhone()).collect(toList());
         log.info(">>>获取接收站信息 成功"+token);
         return ResultVOUtil.success(list);
     }
 
+    /**
+     * 个人用户信息只有自己能看到；而站点和站点负责人的信息应该所有人都看到
+     * @param token
+     * @return
+     */
     @ResponseBody
     @GetMapping("/user")
     @ApiOperation(value = "获取个人用户信息")
@@ -119,7 +122,7 @@ public class InfoController {
         User u = userDao.findByToken(token);
         if (u == null) {
             log.info(">>>获取个人用户信息 未查到该用户："+token);
-            return ResultVOUtil.error(ExceptionType.INFO_NULL.getCode(), "未查到该用户");
+            return ResultVOUtil.error(ExceptionType.INFO_NULL.getCode(), "您不是个人用户，所以无法看到信息");
         }
         List<String> list = Stream.of(u.getAvatar(), u.getUsername(), u.getPhone(), u.getAddress()).collect(toList());
         log.info(">>>获取个人用户信息 成功"+token);
@@ -129,12 +132,11 @@ public class InfoController {
     @ResponseBody
     @GetMapping("/d_manager")
     @ApiOperation(value = "获取调配站负责人信息")
-    @Authorize(role = "1")
     public ResultVO getDesignManagerInfo(@RequestParam("token")String token) {
         DesignStationManager u = designStationManagerDao.findByToken(token);
         if (u == null) {
             log.info(">>>获取调配站负责人信息 未查到该用户："+token);
-            return ResultVOUtil.error(ExceptionType.INFO_NULL.getCode(), "未查到该用户");
+            return ResultVOUtil.error(ExceptionType.INFO_NULL.getCode(), "您不是负责人，所以无法看到信息");
         }
         DesignStation ds = designStationDao.findById(u.getStationId());
         List<String> list = Stream.of(u.getAvatar(), "角色：调配站负责人",u.getUsername(), u.getPhone(), ds.getName(), ds.getAddress()).collect(toList());
@@ -145,12 +147,11 @@ public class InfoController {
     @ResponseBody
     @GetMapping("/r_manager")
     @ApiOperation(value = "获取接收站负责人信息")
-    @Authorize(role = "2")
     public ResultVO getReceiveManagerInfo(@RequestParam("token")String token) {
         ReceiveStationManager u = receiveStationManagerDao.findByToken(token);
         if (u == null) {
             log.info(">>>获取接收站负责人信息 未查到该用户："+token);
-            return ResultVOUtil.error(ExceptionType.INFO_NULL.getCode(), "未查到该用户");
+            return ResultVOUtil.error(ExceptionType.INFO_NULL.getCode(), "您不是负责人，所以无法看到信息");
         }
         ReceiveStation ds = receiveStationDao.findById(u.getStationId());
         List<String> list = Stream.of(u.getAvatar(), "角色：接收站负责人", u.getUsername(), u.getPhone(), ds.getName(), ds.getAddress()).collect(toList());

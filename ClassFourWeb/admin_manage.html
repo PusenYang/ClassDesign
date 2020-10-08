@@ -23,7 +23,7 @@
     <div class="layui-fluid">
         <div class="layui-card">
             <div class="layui-card-header">
-                <p style="text-align: center;font-size: large;">待审核列表</p>
+                <p style="text-align: center;font-size: large;">管理员后台</p>
                 <span class="layui-layout-right">
                     <a href="javascript:;" hg-event="fullscreen">
                         <i class="layui-icon layui-icon-screen-full"></i>
@@ -34,20 +34,21 @@
                 <div class="layui-form">
                     <div class="layui-form-item">  
                         <div class="layui-inline">
-                            <select name="quiz1">
-                                <option value="浙江" selected="">全部</option>
-                                <option value="你的工号">江西省</option>
-                                <option value="你最喜欢的老师">福建省</option>
+                            <select name="quiz1" id="type_select">
+                                <option value="1">调配站</option>
+                                <option value="2">接收站</option>
+                            </select>
+                        </div> 
+                        <div class="layui-inline">
+                            <select name="quiz1" id="status_select">
+                                <option value="999">请选择状态</option>
+                                <option value="999">全部</option>
+                                <option value="1">已审核</option>
+                                <option value="0">待审核</option>
                             </select>
                         </div>                  
-                        <div class="layui-inline">
-                            <select name="quiz1">
-                                <option value="浙江">调配站</option>
-                                <option value="你的工号">接收站</option>
-                            </select>
-                        </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <button class="layui-btn layui-btn-sm layui-btn-normal" lay-submit lay-filter="sreach"><i class="layui-icon layui-icon-sm">&#xe615;</i></button>
+                            <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="get_check_list()"><i class="layui-icon layui-icon-sm">&#xe615;</i></button>
                         </div>
                     </div>
                 </div>
@@ -57,55 +58,101 @@
     </div>
 </body>
 <script>
-    
-    //通过
-    function edit(obj, field) {
-        console.log(field); //点击的单元格
-        //obj通过行tool修改-lay-event
-        var row = obj ? obj : table.getSelected(); //hg.table.datatable('test', 'getSelected');
-        console.log(row);
-        if (row) {
-            hg.open('修改用户' + row.data.username, './DataGrid-add.html', 600, 400);
-        } else {
-            hg.msg('请选中一行数据，再操作！');
-        }
-    }
-    //未通过
-    function del(obj) {
-        //obj通过行tool删除-lay-event
-        var row = obj ? obj : table.getSelected(); //hg.table.datatable('test', 'getSelected');
-        if (row) {
-            hg.confirm("删除当前选中的用户，确定要删除吗？", function () {
-                //row.del(); //只删本地数据
-                hg.msg('删除成功！');
-                table && table.reload(); //hg.table.datatable('test', 'reload');
-            });
-        } else {
-            hg.msg('请选中一行数据，再操作！');
-        }
-    }
-    //查看部门
-    function depts(obj, field) {
-        console.log(field); //点击的单元格
-        hg.msg(JSON.stringify(obj.data));
-    }
-    
-    //监听表单提交事件
-    hg.form.onsubmit('sreach', function (data) {
-        var start = data.start;
-        var end = data.end;
-        if (start && end) {
-            if (start > end) {
-                hg.msg("时间范围错误，请重新选择!");
-                return false;
+
+    var global_data;
+
+    function get_check_list() {
+        var token = document.cookie.split(";")[0];
+
+        var select = document.getElementById("status_select");
+        var idx = select.selectedIndex;
+        var va = select.options[idx].value;
+
+        var select2 = document.getElementById("type_select");
+        var idx2 = select2.selectedIndex;
+        var val = select2[idx2].value;
+
+        if (val == "1") url = "http://127.0.0.1:8000/rds1123/admin/part_design";
+        else url = "http://127.0.0.1:8000/rds1123/admin/part_receive";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: JSON.stringify({
+                "flag": va,
+                "token": token
+            }),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+            // cache: true,
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                global_data = result.data;
+                var table = hg.table.datatable('test', '用户管理', global_data, {}, tableCols, '', false, 'full-180');
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                window.location.href = "./404.html";
+            },
+            complete: function () {
+        
             }
-        } else if (start || end) {
-            hg.msg("时间范围错误，请重新选择!");
-            return false;
-        }
-        hg.msg(JSON.stringify(data));
-        table && table.reload(data);
-    });
+        });
+    }
+
+    //查看
+    function get_image(obj, field) {
+        var image_url = JSON.stringify(obj.data.image);
+        window.open(image_url);
+    }
+
+    function give_check(obj, field) {
+        var station_id = obj.data.id;
+        var station_name = obj.data.name;
+        var token = document.cookie.split(";")[0];
+        var verify = 1;
+        do_check(station_id,station_name,token,verify);
+    }
+
+    function give_uncheck(obj, field) {
+        var station_id = obj.data.id;
+        var station_name = obj.data.name;
+        var token = document.cookie.split(";")[0];
+        var verify = 0;
+        do_check(station_id,station_name,token,verify);
+    }
+
+    function do_check(tation_id,station_name,token,verify) {
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:8000/rds1123/admin/do_check",
+            data: JSON.stringify({
+                "id": station_id,
+                "name": station_name,
+                "token": token,
+                "verify":verify
+            }),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                hg.msg("操作成功");
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                hg.msg("操作失败，请稍后重试");
+            },
+            complete: function () {
+        
+            }
+        });
+    }
+    
     var tableCols = [[
         { field: 'id', width: '10%', title: '站点ID'}, 
         { field: 'name', width: '20%', title: '站点名字'}, 
@@ -116,12 +163,12 @@
         { field: 'remark', title: '备注', width: '20%' }, 
         { 
             field: 'image', width: '10%', title: '资格凭证', templet: function (d) {
-                return '<span><a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="depts">查看</a></span>'
+                return '<span><a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="get_image">查看</a></span>'
             }
         }, 
         {
             field: 'right', width: '10%', title: '操作', templet: function (d) {
-                return '<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>'
+                return '<a class="layui-btn layui-btn-xs" lay-event="give_check()">通过</a> <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="give_uncheck()">不通过</a>'
             }
         }]
     ];

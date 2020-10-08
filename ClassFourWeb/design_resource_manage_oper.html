@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="hg-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" href="./lib/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="./lib/admin/admin.css" media="all">
+    <link rel="stylesheet" href="./lib/Scrollbar/jquery.scrollbar.css">
+    <script type="text/javascript" src="./lib/admin/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="./lib/Scrollbar/jquery.scrollBar.js"></script>
+    <script type="text/javascript" src="./lib/layui/layui.js"></script>
+    <script type="text/javascript" src="./lib/admin/admin.js"></script>
+    
+</head>
+
+<body class="layui-body-content">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <label for="L_username" class="layui-form-label">
+                        物资总数
+                    </label>
+                    <div class="layui-input-inline">
+                        <input id="total_amount" type="text" required=""
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label"></label>
+                    <button type="button" class="layui-btn" onclick="edit_resource()">确认</button></div>
+            </form>
+        </div>
+    </div>
+    <script>
+        function edit_resource() {
+            var type = getParams("type");
+            var amount = document.getElementById("total_amount").value;
+            var token = document.cookie.split(";")[0];
+            if (token.length < 2) return;
+            $.ajax({
+                type: "POST",
+                url: "http://127.0.0.1:8000/rds1123/d_station/resource_list_edit",
+                data: JSON.stringify({
+                    "token": token,
+                    "type": type,
+                    "amount": amount
+                }),
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+                // cache: true,
+                timeout: 5000,
+                success: function (result) {
+                    if (result.code != 0) {
+                        alert(result.message);
+                    }
+                    layer.alert("修改成功", {
+                            icon: 6
+                        },
+                        function () {
+                            //关闭当前frame
+                            hg.close();
+
+                            // 可以对父窗口进行刷新 
+                            hg.base_reload();
+                        });
+                    return false;
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    layer.alert("修改失败，可能是网络错误，请稍后重试", {
+                            icon: 5
+                        },
+                        function () {
+                            //关闭当前frame
+                            hg.close();
+                            // 可以对父窗口进行刷新 
+                            hg.base_reload();
+                        });
+                    return false;
+                },
+                complete: function () {
+            
+                }
+            });
+        }
+
+        function getParams(key) {
+            var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return unescape(r[2]);
+            }
+            return null;
+        };
+    </script>
+</body>
+
+</html>

@@ -26,6 +26,7 @@ CREATE TABLE `class_design`.`design_station`  (
   `manager_name` varchar(45) NULL,
   `manager_phone` varchar(45) NULL,
   `status` tinyint NULL,
+  `create_time` varchar(45) NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -43,6 +44,7 @@ CREATE TABLE `class_design`.`receive_station`  (
   `manager_name` varchar(45) NULL,
   `manager_phone` varchar(45) NULL,
   `status` tinyint NULL,
+  `create_time` varchar(45) NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -54,6 +56,7 @@ CREATE TABLE `class_design`.`admin`  (
   `avatar` varchar(255) NULL,
   `salt` varchar(45) NOT NULL,
   `token` varchar(45) NULL,
+  `create_time` varchar(45) NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -68,6 +71,7 @@ CREATE TABLE `class_design`.`user`  (
   `address` varchar(255) NULL,
   `longitude` double(10, 5) NULL,
   `latitude` double(10, 5) NULL,
+  `create_time` varchar(45) NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -119,9 +123,12 @@ CREATE TABLE `class_design`.`user_order`  (
   `longitude` double(45, 0) NULL,
   `latitude` double(45, 0) NULL,
   `the_date` varchar(45) NULL,
+  `design_date` varchar(45) NULL,
+  `receive_date` varchar(45) NULL,
   `design_id` int NULL,
   `design_name` varchar(45) NULL,
   `design_address` varchar(255) NULL,
+  `create_time` varchar(45) NULL,
   PRIMARY KEY (`id`)
 );
 

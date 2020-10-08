@@ -1,0 +1,24 @@
+package four.classd.cd.dao;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
+
+@SpringBootTest
+@RunWith(SpringRunner.class)
+public class UserOrderDaoTest {
+
+    @Autowired
+    private UserOrderDao userOrderDao;
+
+    @Test
+    public void getDate() {
+//        List<String> res = userOrderDao.getDate("347892");
+//        System.out.println(res.size());
+//        System.out.println(res.get(0));
+    }
+}

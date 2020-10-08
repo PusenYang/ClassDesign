@@ -15,4 +15,5 @@ public class DesignStationResource {
     private int stationId;
     private int typeCode;
     private int amount;
+
 }

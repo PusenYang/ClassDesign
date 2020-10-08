@@ -31,7 +31,10 @@ public class UserOrder {
     private String address; // 资源提供的地点
     private double longitude; // 经度
     private double latitude; // 纬度
+
     private String theDate; // 资源提供的日期
+    private String designDate; // 调配站收到的日期
+    private String receiveDate; // 接收站收到的日期
 
     private int designId; // 提供到哪个配送站
     private String designName; // 配送站的名字

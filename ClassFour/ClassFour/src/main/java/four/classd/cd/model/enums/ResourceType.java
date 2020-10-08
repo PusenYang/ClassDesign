@@ -27,4 +27,10 @@ public enum ResourceType {
         this.code = code;
         this.msg = msg;
     }
+
+    public static int getCode(String tmp) {
+        if (tmp.equals(N95.getMsg())) return N95.getCode();
+        else if (tmp.equals(PM25.getMsg())) return PM25.getCode();
+        else return Ori.getCode();
+    }
 }
