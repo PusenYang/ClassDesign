@@ -22,7 +22,7 @@ public interface UserDao {
     @Insert({"insert into",USER_TABLE,"(",INSERT_FIELD,") values(#{id},#{username},#{avatar},#{password},#{salt},#{phone},#{address},#{latitude},#{longitude} ,#{createTime})"})
     Integer addUser(User user);
 
-    @Update({"update",USER_TABLE,"(",INSERT_FIELD,") values(#{id},#{username},#{avatar},#{password},#{salt},#{phone},#{address})"})
+    @Update({"update",USER_TABLE,"set token=#{token} where username=#{username}"})
     Integer updateToken(@Param("username")String username, @Param("token")String token);
 
     @Select({"select * from",USER_TABLE,"where token = #{token}"})

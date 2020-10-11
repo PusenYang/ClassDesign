@@ -33,7 +33,7 @@ public interface ReceiveStationManagerDao {
     ReceiveStationManager findByToken(@Param("token")String token);
 
     // 查询站点的负责人
-    @Select({"select * from",RSM_TABLE,"where station_id = #{stationId)"})
+    @Select({"select * from",RSM_TABLE,"where station_id = #{stationId}"})
     ReceiveStationManager findByStation(@Param("stationId")int stationId);
 
     // 查询所有

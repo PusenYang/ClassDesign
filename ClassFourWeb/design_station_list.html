@@ -76,8 +76,7 @@
             },
             dataType: "json",
             contentType: "application/json;charset=utf-8",
-            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
-            // cache: true,
+            async: true, 
             timeout: 5000,
             success: function (result) {
                 if (result.code != 0) {
@@ -95,41 +94,6 @@
         });
     }
 
-    // $(document).ready(function() {
-    //     $.ajax({
-    //         type: "GET",
-    //         url: "http://127.0.0.1:8000/rds1123/position/province",
-    //         data: "",
-    //         dataType: "json",
-    //         contentType: "application/json;charset=utf-8",
-    //         async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
-    //         // cache: true,
-    //         timeout: 5000,
-    //         success: function (result) {
-    //             if (result.code != 0) {
-    //                 alert(result.message);
-    //             }
-    //             var data = result.data;
-    //             var sel = document.getElementById("province_select");
-    //             for (var i in data) {
-    //                 alert(data[i]);
-    //                 var option = document.createElement("option");
-    //                 sel.append('<option value='+data[i]+'>'+data[i]+'</option>');
-    //                 alert(sel.innerHTML);
-    //             }
-    //             layui.use('form',function(){
-	// 				var form=layui.form;
-	// 				form.render("select");
-	// 			})
-    //         },
-    //         error: function (XMLHttpRequest, textStatus, errorThrown) {
-    //             window.location.href = "./404.html";
-    //         },
-    //         complete: function () {
-        
-    //         }
-    //     });
-    // });
     
     //查看物资资源
     function depts(obj, field) {
@@ -141,17 +105,16 @@
             },
             dataType: "json",
             contentType: "application/json;charset=utf-8",
-            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
-            // cache: true,
+            async: true, 
             timeout: 5000,
             success: function (result) {
                 if (result.code != 0) {
                     alert(result.message);
                 }
-                hg.msg(JSON.stringify(result.data));
+                hg.msg(result.data);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                hg.msg(JSON.stringify("查看失败"));
+                hg.msg("查看失败");
             },
             complete: function () {
         
@@ -177,10 +140,7 @@
     ];
     //基本数据表格
    var table = hg.table.datatable('test', '用户管理', global_data, {}, tableCols, '', false, 'full-180');
-   table.onrowclick(function(obj) {
-        console.log(obj);
-        console.log('行单击事件');
-   });
+   
 </script>
 
 </html>

@@ -13,6 +13,12 @@ import lombok.Data;
 @Data
 public class UserOrderResource {
     private String number;
-    private ResourceType type;
+    private int typeCode;
     private int amount;
+
+    public UserOrderResource(String number, int typeCode, int amount) {
+        this.amount = amount;
+        this.typeCode = typeCode;
+        this.number = number;
+    }
 }

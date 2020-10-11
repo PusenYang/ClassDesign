@@ -33,8 +33,14 @@ public interface DesignOrderDao {
     @Select({"select * from",DESIGN_ORDER_TABLE,"where start_id = #{designId}"})
     List<DesignOrder> findByDesign(@Param("designId")int designId);
 
+    @Select({"select * from",DESIGN_ORDER_TABLE,"where start_id = #{designId} and status=#{status}"})
+    List<DesignOrder> findByDesignStatus(@Param("designId")int designId,@Param("status")Integer status);
+
     @Select({"select * from",DESIGN_ORDER_TABLE,"where end_id = #{receiveId}"})
     List<DesignOrder> findByReceive(@Param("receiveId")int receiveId);
+
+    @Select({"select * from",DESIGN_ORDER_TABLE,"where end_id = #{receiveId} and status = #{status]"})
+    List<DesignOrder> findByReceiveStatus(@Param("receiveId")int receiveId, @Param("status")int status);
 
     @Update({"update",DESIGN_ORDER_TABLE,"set status = #{status} where number = #{number}"})
     Integer updateStatusByNumber(@Param("status")int status, @Param("number")String number);

@@ -82,7 +82,7 @@
                     alert(result.message);
                 }
                 document.cookie = result.data;
-                location.reload();
+                alert("登录成功 ! ");
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("登录失败 ！");

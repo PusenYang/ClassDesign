@@ -56,46 +56,57 @@ public class UserOrderController {
     @ResponseBody
     @PostMapping("/create")
     @ApiOperation(value = "用户创建物资单")
-    @Authorize(role = "3")
     public ResultVO createUserOrder(@RequestBody(required = true)Map<String,Object> map) {
         /* 订单参数 */
-        // todo 从token获取USERID
-        String token = "";
-        int userId = userDao.findIdByToken(token);
+        String token = map.get("token").toString();
+        User u = userDao.findByToken(token);
+        if (u == null) {
+            log.info(">>>用户创建物资单 没有此用户");
+            return ResultVOUtil.error(ExceptionType.PARAM_ERROR.getCode(), "您还不是个人用户, 无法创建物资单");
+        }
         String phone = map.get("phone").toString();
         String address = map.get("address").toString();
         String date = map.get("date").toString();
-        int designId = Integer.parseInt(map.get("design_id").toString());
-        DesignStation station = designStationDao.findById(designId);
-        // 获取资源列表
-        List<UserOrderResource> resList = (List<UserOrderResource>) map.get("res_list");
-        if (resList.size() < 1) {
-            log.info(">>>物资单 资源列表为空");
-            return ResultVOUtil.error(ExceptionType.PARAM_ERROR.getCode(), "资源列表为空");
-        }
-        // 遍历列表
+        String designName = map.get("design_name").toString();
+        DesignStation station = designStationDao.findByName(designName);
+
+        String number = KeyUtil.generateNumber();
+        int id = KeyUtil.generateOrdID();
+
+        // 资源
         int totalAmount = 0;
         int totalWeight = 0;
-        for (UserOrderResource uod : resList) {
-            userOrderDao.addResource(uod);
-            totalAmount += uod.getAmount();
-            totalWeight += uod.getAmount() * resourceDao.getWeight(uod.getType().getCode());
-        }
+        // n95
+        Integer n95 = TypeUtil.getNumber(Integer.parseInt(map.get("amount_95").toString()));
+        Integer pm25 = TypeUtil.getNumber(Integer.parseInt(map.get("amount_25").toString()));
+        Integer ori = TypeUtil.getNumber(Integer.parseInt(map.get("amount_ori").toString()));
+
+        totalAmount = n95 + pm25 + ori;
+        totalWeight = n95 * resourceDao.getWeight(ResourceType.N95.getCode())
+                + pm25 * resourceDao.getWeight(ResourceType.PM25.getCode())
+                + ori * resourceDao.getWeight(ResourceType.Ori.getCode());
+        userOrderDao.addResource(new UserOrderResource(number,ResourceType.N95.getCode(),n95));
+        userOrderDao.addResource(new UserOrderResource(number,ResourceType.PM25.getCode(),pm25));
+        userOrderDao.addResource(new UserOrderResource(number,ResourceType.Ori.getCode(),ori));
 
         UserOrder order = new UserOrder();
-        order.setId(KeyUtil.generateOrdID());
-        order.setNumber(KeyUtil.generateNumber());
-        order.setStatus(UserOrderStatus.NEW.getCode()); // 刚创建
-        order.setUserId(userId);
-        order.setPhone(phone);
-        order.setAddress(address);
-        order.setResList(resList);
+        order.setId(id);
+        order.setNumber(number);
+        order.setStatus(UserOrderStatus.NEW.getCode());
+        order.setUserId(u.getId());
+        order.setUsername(u.getUsername());
+        order.setPhone(u.getPhone());
         order.setTotalWeight(totalWeight);
         order.setTotalAmount(totalAmount);
+        order.setAddress(u.getAddress());
+        order.setLongitude(u.getLongitude());
+        order.setLatitude(u.getLatitude());
         order.setTheDate(date);
-        order.setDesignId(designId);
-        order.setDesignName(station.getName());
+        order.setDesignId(station.getId());
+        order.setDesignName(designName);
         order.setDesignAddress(station.getAddress());
+        order.setCreateTime(DateUtil.getTimeNow());
+
         orderService.createUserOrder(order);
 
         log.info(">>>物资单 创建成功");
@@ -133,9 +144,12 @@ public class UserOrderController {
         int a3 = TypeUtil.getNumber(userOrderDao.getResource(number,ResourceType.Ori.getCode()));
         // 更新站点物资
         int stationId = order.getDesignId();
-        designStationDao.updateResource(stationId,ResourceType.N95.getCode(),a1);
-        designStationDao.updateResource(stationId,ResourceType.PM25.getCode(),a2);
-        designStationDao.updateResource(stationId,ResourceType.Ori.getCode(),a3);
+        int aa1 = TypeUtil.getNumber(designStationDao.getAmount(stationId,ResourceType.N95.getCode()));
+        int aa2 = TypeUtil.getNumber(designStationDao.getAmount(stationId,ResourceType.PM25.getCode()));
+        int aa3 = TypeUtil.getNumber(designStationDao.getAmount(stationId,ResourceType.Ori.getCode()));
+        designStationDao.updateResource(stationId,ResourceType.N95.getCode(),a1+aa1);
+        designStationDao.updateResource(stationId,ResourceType.PM25.getCode(),a2+aa2);
+        designStationDao.updateResource(stationId,ResourceType.Ori.getCode(),a3+aa3);
         // 更新单状态
         userOrderDao.updateStatusByNumber(UserOrderStatus.DE_RECEIVE.getCode(),number);
         // 更新日期

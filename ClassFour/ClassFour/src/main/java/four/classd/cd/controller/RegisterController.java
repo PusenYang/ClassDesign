@@ -7,11 +7,9 @@ import four.classd.cd.constant.RoleAvatar;
 import four.classd.cd.dao.*;
 import four.classd.cd.model.entity.*;
 import four.classd.cd.model.enums.ExceptionType;
+import four.classd.cd.model.enums.ResourceType;
 import four.classd.cd.model.vo.ResultVO;
-import four.classd.cd.util.GaodeMapUtil;
-import four.classd.cd.util.KeyUtil;
-import four.classd.cd.util.MD5Util;
-import four.classd.cd.util.ResultVOUtil;
+import four.classd.cd.util.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -112,6 +110,7 @@ public class RegisterController {
         user.setSalt(salt);
         user.setPhone(phone);
         user.setAddress(address);
+        user.setCreateTime(DateUtil.getTimeNow());
         try {
             String[] arr = GaodeMapUtil.getLocation(address);
             user.setLongitude(Double.valueOf(arr[0]));
@@ -185,8 +184,15 @@ public class RegisterController {
         DesignStation station = new DesignStation();
         int stationId = KeyUtil.generateOrdID();
         int managerId = KeyUtil.generateOrdID();
+        System.out.println(stationName);
+        System.out.println(stationAddress);
         station.setId(stationId);
         station.setName(stationName);
+        DesignStation rs = designStationDao.findByName(stationName);
+        if (rs != null) {
+            log.info(">>>调配站站注册 名字不唯一");
+            return ResultVOUtil.error(ExceptionType.PARAM_ERROR.getCode(), "该站点名字已被注册");
+        }
         station.setAddress(stationAddress);
         station.setCounty(stationCounty);
         station.setProvince(stationProvince);
@@ -196,6 +202,7 @@ public class RegisterController {
         station.setManagerId(managerId);
         station.setManagerName(username);
         station.setManagerPhone(phone);
+        station.setCreateTime(DateUtil.getTimeNow());
         try {
             String[] arr = GaodeMapUtil.getLocation(stationAddress);
             station.setLongitude(Double.valueOf(arr[0]));
@@ -217,7 +224,13 @@ public class RegisterController {
         manager.setIdCard(idCard);
         manager.setStationId(stationId);
         manager.setAvatar(avatar);
+        manager.setCreateTime(DateUtil.getTimeNow());
         designStationManagerDao.addManager(manager);
+
+        /* 初始化物资 */
+        designStationDao.addResource(new DesignStationResource(stationId,ResourceType.N95.getCode(),0));
+        designStationDao.addResource(new DesignStationResource(stationId,ResourceType.PM25.getCode(),0));
+        designStationDao.addResource(new DesignStationResource(stationId,ResourceType.Ori.getCode(),0));
 
         log.info(">>>注册 调配站管理人员注册成功");
         return ResultVOUtil.success();
@@ -283,6 +296,11 @@ public class RegisterController {
         int managerId = KeyUtil.generateOrdID();
         station.setId(stationId);
         station.setName(stationName);
+        ReceiveStation rs = receiveStationDao.findByName(stationName);
+        if (rs != null) {
+            log.info(">>>接收站注册 名字不唯一");
+            return ResultVOUtil.error(ExceptionType.PARAM_ERROR.getCode(), "该站点名字已被注册");
+        }
         station.setAddress(stationAddress);
         station.setProvince(stationProvince);
         station.setCity(stationCity);
@@ -291,6 +309,7 @@ public class RegisterController {
         station.setManagerId(managerId);
         station.setManagerName(username);
         station.setManagerPhone(phone);
+        station.setCreateTime(DateUtil.getTimeNow());
         try {
             String[] arr = GaodeMapUtil.getLocation(stationAddress);
             station.setLongitude(Double.valueOf(arr[0]));
@@ -312,7 +331,13 @@ public class RegisterController {
         manager.setIdCard(idCard);
         manager.setStationId(stationId);
         manager.setAvatar(avatar);
+        manager.setCreateTime(DateUtil.getTimeNow());
         receiveStationManagerDao.addManager(manager);
+
+        /* 初始化物资 */
+        receiveStationDao.addResource(new ReceiveStationResource(stationId,ResourceType.N95.getCode(),0));
+        receiveStationDao.addResource(new ReceiveStationResource(stationId,ResourceType.PM25.getCode(),0));
+        receiveStationDao.addResource(new ReceiveStationResource(stationId,ResourceType.Ori.getCode(),0));
 
         log.info(">>>注册 调配站管理人员注册成功");
         return ResultVOUtil.success();

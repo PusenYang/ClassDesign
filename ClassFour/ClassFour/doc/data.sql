@@ -85,6 +85,7 @@ CREATE TABLE `class_design`.`design_station_manager`  (
   `id_card` varchar(45) NULL,
   `station_id` int NULL,
   `avatar` varchar(255) NULL,
+    `create_time` varchar(45) NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -98,6 +99,7 @@ CREATE TABLE `class_design`.`receive_station_manager`  (
   `id_card` varchar(45) NULL,
   `avatar` varchar(255) NULL,
   `station_id` int NULL,
+    `create_time` varchar(45) NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -153,7 +155,8 @@ CREATE TABLE `class_design`.`design_order`  (
   `end_id` int NULL,
   `end_name` varchar(45) NULL,
   `end_address` varchar(255) NULL,
-  `end_date` varchar(45) NULL
+  `end_date` varchar(45) NULL,
+    `create_time` varchar(45) NULL,
 );
 
 -- 资源
@@ -169,33 +172,35 @@ CREATE TABLE `class_design`.`resource`  (
 CREATE TABLE `class_design`.`design_station_resource`  (
   `station_id` int NOT NULL,
   `type_code` tinyint NULL,
-  `amount` int NULL,
-  PRIMARY KEY (`station_id`)
-);
+  `amount` int NULL
+  );
 
 CREATE TABLE `class_design`.`receive_station_resource`  (
   `station_id` int NOT NULL,
   `type_code` tinyint NULL,
-  `amount` int NULL,
-  PRIMARY KEY (`station_id`)
-);
+  `amount` int NULL
+  );
 
 CREATE TABLE `class_design`.`design_order_resource`  (
   `number` varchar(45) NOT NULL,
   `type_code` tinyint NULL,
-  `amount` int NULL,
-  PRIMARY KEY (`number`)
-);
+  `amount` int NULL
+  );
 
 CREATE TABLE `class_design`.`user_order_resource`  (
   `number` varchar(45) NOT NULL,
   `type_code` tinyint NULL,
-  `amount` int NULL,
-  PRIMARY KEY (`number`)
-);
+  `amount` int NULL
+  );
 
 ----------------------------------------------------------数据--------------------------------------------------------
 INSERT INTO `class_design`.`admin`(`id`, `username`, `password`, `salt`) VALUES (999999, 'admin', '4381A4A67D264FBC4C88629B9CB469BD', 'MySalt');
+
+INSERT INTO `class_design`.`resource`(`id`, `type_code`, `type_name`, `weight`, `image`) VALUES (100, 1, 'N95口罩', 8, 'http://120.53.24.57:9090/resour/mask_n95.jpg');
+
+INSERT INTO `class_design`.`resource`(`id`, `type_code`, `type_name`, `weight`, `image`) VALUES (200, 2, 'PM2.5口罩', 12, 'http://120.53.24.57:9090/resour/mask_pm25.jpg');
+
+INSERT INTO `class_design`.`resource`(`id`, `type_code`, `type_name`, `weight`, `image`) VALUES (300, 3, '普通医用外科口罩', 3, 'http://120.53.24.57:9090/resour/mask_ori.jpg');
 
 
 

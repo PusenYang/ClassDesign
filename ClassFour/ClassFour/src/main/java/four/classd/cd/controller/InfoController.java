@@ -47,13 +47,49 @@ public class InfoController {
     @Autowired
     private ReceiveStationDao receiveStationDao;
 
+    @Autowired
+    private GoManagerDao goManagerDao;
+
+    @ResponseBody
+    @GetMapping("/goer_by_design")
+    @ApiOperation(value = "根据调配站获取运输负责人")
+    public ResultVO getGoerByProvince(@RequestParam("token")String token) {
+        DesignStationManager dsm = designStationManagerDao.findByToken(token);
+        if (dsm == null) {
+            log.info(">>>根据调配站获取运输负责人 不是调配负责人");
+            return ResultVOUtil.error(ExceptionType.AUTHORITY_ERROR.getCode(),"您还不是调配站负责人,无法获取");
+        }
+        String city = designStationDao.findCityById(dsm.getStationId());
+        List<GoManager> stations = goManagerDao.findByCity(city);
+        log.info(">>>根据调配站获取运输负责人 成功");
+        return ResultVOUtil.success(stations);
+    }
+
+    @ResponseBody
+    @GetMapping("/receive_by_province")
+    @ApiOperation(value = "根据省份获取接收站")
+    public ResultVO getReceiveByProvince(@RequestParam("province")String province) {
+        List<String> stations = receiveStationDao.findNameByProvince(province,StationStatus.CHECKED.getCode());
+        log.info(">>>根据省份获取接收站 成功");
+        return ResultVOUtil.success(stations);
+    }
+
+    @ResponseBody
+    @GetMapping("/design_by_province")
+    @ApiOperation(value = "根据省份获取调配站")
+    public ResultVO getDesignByProvince(@RequestParam("province")String province) {
+        List<String> stations = designStationDao.findNameByProvince(province,StationStatus.CHECKED.getCode());
+        log.info(">>>根据省份获取调配站 成功"+stations.size());
+        return ResultVOUtil.success(stations);
+    }
+
     @ResponseBody
     @GetMapping("/station_map")
     @ApiOperation(value = "获取站点地图")
     public ResultVO getStationMap() {
         // 先获取所有站点
-        List<DesignStation> designStations = designStationDao.findAll(StationStatus.CHECKED.getCode());
-        List<ReceiveStation> receiveStations = receiveStationDao.findAll(StationStatus.CHECKED.getCode());
+        List<DesignStation> designStations = designStationDao.findWAll(StationStatus.CHECKED.getCode());
+        List<ReceiveStation> receiveStations = receiveStationDao.findWAll(StationStatus.CHECKED.getCode());
         List<StationMapVO> res = new ArrayList<>();
         for (DesignStation ds : designStations) {
             StationMapVO smv = new StationMapVO();

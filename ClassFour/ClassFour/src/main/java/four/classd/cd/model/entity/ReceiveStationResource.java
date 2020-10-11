@@ -13,4 +13,10 @@ public class ReceiveStationResource {
     private int stationId;
     private int typeCode;
     private int amount;
+
+    public ReceiveStationResource(int stationId, int typeCode, int amount) {
+        this.stationId = stationId;
+        this.typeCode = typeCode;
+        this.amount = amount;
+    }
 }

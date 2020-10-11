@@ -27,109 +27,86 @@
         <div class="layui-card-body" style="padding: 15px;">
           <form class="layui-form" action="" lay-filter="component-form-group">
             <div class="layui-form-item">
-                <label class="layui-form-label">选择物资类型</label>
+                <label class="layui-form-label">输入数量</label>
                 <div class="layui-input-block">
                   <div class="layui-inline">
-                    <select name="quiz1">
-                      <option value="">请选择</option>
-                      <option value="浙江" >N95口罩</option>
-                      <option value="你的工号">PM2.5口罩</option>
-                      <option value="你最喜欢的老师">普通医用外科口罩</option>
-                    </select>
+                    <input id="val_95" type="text" class="layui-input" placeholder="输入N95口罩数量">
                   </div>
                   <div class="layui-inline">
-                    <input type="text" class="layui-input" placeholder="请输入数量">
-                  </div>
-                  <div class="layui-inline">
-                    <button class="layui-btn layui-btn-primary layui-btn-sm">查看图片</button>
+                    <button onclick="view_image('./images/mask_n95.jpg')" class="layui-btn layui-btn-primary layui-btn-sm">查看N95口罩图片</button>
                   </div>
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">选择物资类型</label>
+                <label class="layui-form-label">输入数量</label>
                 <div class="layui-input-block">
                   <div class="layui-inline">
-                    <select name="quiz1">
-                      <option value="">请选择</option>
-                      <option value="浙江" >N95口罩</option>
-                      <option value="你的工号">PM2.5口罩</option>
-                      <option value="你最喜欢的老师">普通医用外科口罩</option>
-                    </select>
+                    <input id="val_25" type="text" class="layui-input" placeholder="输入PM2.5口罩数量">
                   </div>
                   <div class="layui-inline">
-                    <input type="text" class="layui-input" placeholder="请输入数量">
-                  </div>
-                  <div class="layui-inline">
-                    <button class="layui-btn layui-btn-primary layui-btn-sm">查看图片</button>
+                    <button onclick="view_image('./images/mask_pm25.jpg')" class="layui-btn layui-btn-primary layui-btn-sm">查看PM2.5口罩图片</button>
                   </div>
                 </div>
             </div>
-            
             <div class="layui-form-item">
-                <label class="layui-form-label">选择物资类型</label>
+                <label class="layui-form-label">输入数量</label>
                 <div class="layui-input-block">
                   <div class="layui-inline">
-                    <select name="quiz1">
-                      <option value="">请选择</option>
-                      <option value="浙江" >N95口罩</option>
-                      <option value="你的工号">PM2.5口罩</option>
-                      <option value="你最喜欢的老师">普通医用外科口罩</option>
-                    </select>
+                    <input id="val_ori" type="text" class="layui-input" placeholder="输入普通医用外科口罩数量">
                   </div>
                   <div class="layui-inline">
-                    <input type="text" class="layui-input" placeholder="请输入数量">
-                  </div>
-                  <div class="layui-inline">
-                    <button class="layui-btn layui-btn-primary layui-btn-sm">查看图片</button>
+                    <button onclick="view_image('./images/mask_ori.jpg')" class="layui-btn layui-btn-primary layui-btn-sm">查看普通医用外科口罩图片</button>
                   </div>
                 </div>
             </div>
+            <form class="layui-form layui-col-md12  layui-form-pane">
             <div class="layui-form-item">
                 <label class="layui-form-label">选择调配站</label>
                 <div class="layui-input-block">
                   <div class="layui-inline">
-                    <select name="quiz1">
-                      <option value="">选择省份</option>
-                      <option value="浙江" >湖北省</option>
-                      <option value="你的工号">湖南省</option>
-                      <option value="你最喜欢的老师">普通医用外科口罩</option>
+                    <select name="quiz1" id="province_select" lay-filter="demo">
+                        <option value="">选择省份</option>
+                        <option value="湖南省">湖南省</option>
+                        <option value="河南省">河南省</option>
+                        <option value="湖北省">湖北省</option>
+                        <option value="江西省">江西省</option>
+                        <option value="安徽省">安徽省</option>
                     </select>
                   </div>
+                  <form class="hg.form">
                   <div class="layui-inline">
-                    <select name="quiz1">
+                    <select name="quiz1" id="design_select">
                         <option value="">选择调配站</option>
-                        <option value="浙江" >湖北省</option>
-                        <option value="你的工号">湖南省</option>
-                        <option value="你最喜欢的老师">普通医用外科口罩</option>
-                      </select>
+                    </select>
                  </div>
                 </div>
             </div>
+            </form>
             
             <div class="layui-form-item">
               <label class="layui-form-label">联系电话</label>
               <div class="layui-input-block">
-                <input type="text" name="identity" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+                <input id="phone" type="text" name="identity" placeholder="" autocomplete="off" class="layui-input">
               </div>
            </div>
 
             <div class="layui-form-item">
                 <label class="layui-form-label">取货地址</label>
                 <div class="layui-input-block">
-                  <input type="text" name="identity" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+                  <input id="address" type="text" name="identity" placeholder="" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">取货日期</label>
                 <div class="layui-inline">
-                    <input class="layui-input layui-input-sm" autocomplete="off" placeholder="填写收取物资的日期" name="start" id="start">
+                    <input id="end" class="layui-input layui-input-sm" placeholder="yy-MM-dd">
                 </div>
             </div>
  
             <div class="layui-form-item layui-layout-admin">
               <div class="layui-input-block">
                 <div class="layui-footer" style="left: 0;padding: 10px 0;text-align: center;background-color: #fff;">
-                  <button class="layui-btn" lay-submit="" lay-filter="component-form-demo1">提交</button>
+                  <button class="layui-btn" onclick="create_order()">提交</button>
                   <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
               </div>
@@ -140,38 +117,117 @@
     </div>
 </body>
 <script>
-  // 自定义验证规则
-  hg.form.verify({
-    title: function(value){
-      if(value.length < 5){
-        return '标题至少得5个字符啊';
-      }
-    }
-    ,pass: [/(.+){6,12}$/, '密码必须6到12位']
-    ,content: function(value){
-      layedit.sync(editIndex);
-    }
-  });
-  // 监听switch操作事件
-  hg.form.onswitch('component-form-switchTest',function(data){
-      hg.msg(data.elem.name+'开关checked：'+(data.elem.checked?'开启':'禁用'));
-      console.log(data.elem.checked);
-      console.log(data.othis);
-      layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis);
-  });
-  // 监听表单提交事件
-  hg.form.onsubmit('component-form-demo1', function (data) {
-      hg.msg(JSON.stringify(data));
-  });
 
-  //日期控件
-  hg.datetime('#start', '#end', {
-        type: 'datetime',
-        value: hg.getdate('datetime', -30),
-        value2: hg.getdate('datetime', '23:59:59'),
-        min: hg.getdate('date', -365),
-        max: hg.getdate(),
+    layui.use(['layer', 'jquery', 'form'], function () {
+        var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form;
+
+        form.on('select(demo)', function(data){
+            //这里做自己想做的事情
+            get_design();
+            //最后再渲柒一次
+            form.render('select');//select是固定写法 不是选择器
+        });
     });
+
+    
+    function get_design(){
+        var sel = document.getElementById("province_select");
+        var idx = sel.selectedIndex;
+        var val = sel.options[idx].value;
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:8000/rds1123/info/design_by_province",
+            data: {
+                "province": val
+            },
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, 
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                var list = result.data;
+                var design_sel = document.getElementById("design_select");
+                var tmp = "";
+                for (var i in list) {
+                    tmp += "<option value="+list[i]+">"+list[i]+"</option>";
+                }
+                alert(tmp);
+                design_sel.innerHTML = tmp;
+                renderForm();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("获取调配站列表失败, 请稍后重试");
+            },
+            complete: function () {
+        
+            }
+        });
+    }
+
+    function renderForm() {
+        layui.use(['form', 'code'], function () {
+            form = layui.form;
+            form.render();
+        });
+    }
+
+    function create_order() {
+        var token = document.cookie.split(";")[0];
+        if (token.length < 2) return;
+
+        var sel = document.getElementById("design_select");
+        var idx = sel.selectedIndex;
+        var val = sel.options[idx].value;
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:8000/rds1123/u_order/create",
+            data: JSON.stringify({
+                "token": token,
+                "phone": document.getElementById("phone").value,
+                "address": document.getElementById("address").value,
+                "date": document.getElementById("end").value,
+                "design_name": val,
+                "amount_95": document.getElementById("val_95").value,
+                "amount_25": document.getElementById("val_25").value,
+                "amount_ori": document.getElementById("val_ori").value
+            }),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, 
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                alert("创建成功, 即将跳转");
+                window.location.href="./user_order_list.html";
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("创建失败, 请稍后重试");
+            },
+            complete: function () {
+        
+            }
+        });
+    }
+
+    function view_image(url) {
+        window.open(url);
+    }
+ 
+    //日期控件
+    // hg.datetime('#start', '#end', {
+    //     type: 'datetime',
+    //     value: hg.getdate('datetime', -30),
+    //     value2: hg.getdate('datetime', '23:59:59'),
+    //     min: hg.getdate('date', -365),
+    //     max: hg.getdate(),
+    // });
 </script>
 
 </html>

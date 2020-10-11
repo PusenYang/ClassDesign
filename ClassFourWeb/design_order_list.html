@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+`<!DOCTYPE html>
 <html>
 
 <head>
@@ -22,36 +22,23 @@
     <div class="layui-fluid">
         <div class="layui-card">
             <div class="layui-card-header">
-                <i class="fa fa-file-text fa-fw"></i>调配单列表
-                <span class="layui-layout-right">
-                    <a href="javascript:;" hg-event="fullscreen">
-                        <i class="layui-icon layui-icon-screen-full"></i>
-                    </a>
-                </span>
+                <p style="text-align:center;font-size:large">调配单列表</p>
             </div>
             <div class="layui-card-body">
                 <div class="layui-form">
                     <div class="layui-form-item">
                         <!-- 地址选择框 -->                      
                         <div class="layui-inline">
-                            <select name="quiz1">
-                                <option value="">调配单状态</option>
-                                <option value="all">全部</option>
-                                <option value="你的工号">运输中</option>
-                                <option value="你最喜欢的老师">接收站已确认</option>
-                            </select>
-                        </div>
-                        <div class="layui-inline">
-                            <select name="quiz1">
-                                <option value="">目标站省份</option>
-                                <option value="浙江">全部</option>
-                                <option value="你的工号">江西省</option>
-                                <option value="你最喜欢的老师">福建省</option>
+                            <select name="quiz1" id="status_select">
+                                <option value="0">调配单状态</option>
+                                <option value="0">全部</option>
+                                <option value="1">已创建待调配</option>
+                                <option value="3">物资运送中</option>
+                                <option value="4">接收站已收取</option>
                             </select>
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <button class="layui-btn layui-btn-sm layui-btn-normal" lay-submit lay-filter="sreach"><i
-                                    class="layui-icon layui-icon-sm">&#xe615;</i></button>
+                            <button onclick="get_order_list" class="layui-btn layui-btn-sm layui-btn-normal" ><i class="layui-icon layui-icon-sm">&#xe615;</i></button>
                         </div>
                     </div>
                 </div>
@@ -61,12 +48,102 @@
     </div>
 </body>
 <script>
-    //查看物资单详情
-    function depts(obj, field) {
-        console.log(field); //点击的单元格
-        hg.msg(JSON.stringify(obj.data));
+    var global_data;
+
+    window.onload = function() {
+        get_order_list();
     }
-    
+
+    function get_order_list() {
+        var token = document.cookie.split(";")[0];
+        var select2 = document.getElementById("status_select");
+        var idx2 = select2.selectedIndex;
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:8000/rds1123/d_order/list",
+            data: JSON.stringify({
+                "status": select2.options[idx2].value,
+                "token": token
+            }),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, 
+            // cache: true,
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                global_data = result.data;
+                console.log(global_data);
+                var table = hg.table.datatable('test', '用户管理', global_data, {}, tableCols, '', false, 'full-180');
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                window.location.href = "./404.html";
+            },
+            complete: function () {
+        
+            }
+        });
+    }
+
+    // 确认物资已发出
+    function verify_sent(obj, field) {
+        var token = document.cookie.split(";")[0];
+        if (token.length < 2) return;
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:8000/rds1123/d_order/design_verify",
+            data: JSON.stringify({
+                "number": obj.data.number,
+                "token": token
+            }),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, 
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                hg.msg("确认成功");
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                hg.msg("确认失败，请稍后重试");
+            },
+            complete: function () {
+        
+            }
+        });
+    }
+
+    function get_info(obj, field) {
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:8000/rds1123/d_order/resource_detail",
+            data: {
+                "number": obj.data.number
+            },
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, 
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                hg.msg(result.data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                hg.msg("查看失败，请稍后重试");
+            },
+            complete: function () {
+        
+            }
+        });
+    }
+
+
     var tableCols = [[
         { field: 'number', width: '10%', title: '单号'}, 
         { field: 'totalAmount', width: '10%', title: '物资总数(个)' }, 
@@ -76,15 +153,16 @@
         { field: 'startDate', title: '始发日期', width: '12.5%'}, 
         { field: 'endDate', title: '到达日期', width: '12.5%'}, 
         { field: 'status', title: '状态',width: '10%'},
-        { 
-            field: 'wealth', width: '10%', title: '详情', templet: function (d) {
-                return '<span><a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="depts">查看</a></span>'
+        {
+            field: 'right', width: '15%', title: '操作', templet: function (d) {
+                return '<a class="layui-btn layui-btn-xs" lay-event="get_info">查看详情</a> <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="verify_sent">确认发出</a>'
             }
         }
     ]
     ];
+
     //基本数据表格
-   var table = hg.table.datatable('test', '用户管理', 'data1.json', {}, tableCols, '', false, 'full-180');
+   var table = hg.table.datatable('test', '用户管理', global_data, {}, tableCols, '', false, 'full-180');
    table.onrowclick(function(obj) {
         console.log(obj);
         console.log('行单击事件');

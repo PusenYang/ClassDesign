@@ -16,4 +16,9 @@ public class DesignStationResource {
     private int typeCode;
     private int amount;
 
+    public DesignStationResource(int stationId, int typeCode, int amount) {
+        this.stationId = stationId;
+        this.typeCode = typeCode;
+        this.amount = amount;
+    }
 }

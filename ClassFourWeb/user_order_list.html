@@ -74,7 +74,7 @@
         var select2 = document.getElementById("status_select");
         var idx2 = select2.selectedIndex;
         $.ajax({
-            type: "POSt",
+            type: "POST",
             url: "http://127.0.0.1:8000/rds1123/u_order/list",
             data: JSON.stringify({
                 "province": select.options[idx].value,

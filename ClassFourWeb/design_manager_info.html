@@ -71,8 +71,7 @@
           },
           dataType: "json",
           contentType: "application/json;charset=utf-8",
-          async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
-          // cache: true,
+          async: true, 
           timeout: 5000,
           success: function (result) {
               if (result.code != 0) {

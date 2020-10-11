@@ -206,12 +206,12 @@
             }),
             dataType: "json",
             contentType: "application/json;charset=utf-8",
-            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
-            // cache: true,
+            async: true, 
             timeout: 5000,
             success: function (result) {
-                if (result.code != 0) {
+                if (result.code != 200) {
                     alert(result.message);
+                    return ;
                 }
                 window.location.href = "./login.html";
             },
@@ -225,7 +225,6 @@
     }
 
     function do_station_register(url) {
-        alert("进入87908方法");
         var province_select = document.getElementById("province_select");
         var province_idx = province_select.selectedIndex;
         var station_province = province_select.options[province_idx].value;
@@ -262,12 +261,13 @@
             }),
             dataType: "json",
             contentType: "application/json;charset=utf-8",
-            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
-            // cache: true,
+            async: true, 
+
             timeout: 5000,
             success: function (result) {
                 if (result.code != 0) {
                     alert(result.message);
+                    return;
                 }
                 window.location.href = "./login.html";
             },
@@ -291,7 +291,7 @@
         ,url: 'http://127.0.0.1:8000/rds1123/register/image'
         ,done: function(res){
             image_url = res.data;
-            alert("上传成功 ！");
+            alert(res.message);
         }
       });
       

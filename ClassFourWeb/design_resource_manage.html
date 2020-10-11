@@ -73,7 +73,8 @@
         //obj通过行tool修改-lay-event
         var row = obj ? obj : table.getSelected(); 
         if (row) {
-            hg.open('物资校正', './design_resource_manage_oper.html?type='+row.type, 600, 400);
+            console.log(row);
+            hg.open('物资校正', './design_resource_manage_oper.html?type='+row.data.typeCode, 600, 400);
         } else {
             hg.msg('请选中一行数据，再操作！');
         }
@@ -81,7 +82,7 @@
 
     //查看
     function depts(obj, field) {
-        var image_url = JSON.stringify(obj.data.image);
+        var image_url = obj.data.image;
         window.open(image_url);
     }
     

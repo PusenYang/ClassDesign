@@ -49,10 +49,10 @@ public class ReceiveStationController {
             log.info(">>>接收站物资清点-修改 不是负责人"+token);
             return ResultVOUtil.error(ExceptionType.AUTHORITY_ERROR.getCode(),"您还不是站点负责人，无法进行物资清点");
         }
-        String type = map.get("type").toString();
+        int type = Integer.parseInt(map.get("type").toString());
         int stationId = dsm.getStationId();
         int amount = Integer.parseInt(map.get("amount").toString());
-        receiveStationDao.updateResource(stationId,ResourceType.getCode(type),amount);
+        receiveStationDao.updateResource(stationId,type,amount);
         log.info(">>>接收站物资清点-修改 成功");
         return ResultVOUtil.success();
     }
@@ -76,9 +76,9 @@ public class ReceiveStationController {
         int a1 = TypeUtil.getNumber(receiveStationDao.getAmount(stationId, ResourceType.N95.getCode()));
         int a2 = TypeUtil.getNumber(receiveStationDao.getAmount(stationId, ResourceType.PM25.getCode()));
         int a3 = TypeUtil.getNumber(receiveStationDao.getAmount(stationId, ResourceType.Ori.getCode()));
-        StationResourceVO v1 = new StationResourceVO(ResourceType.N95.getMsg(),a1,a1*w1,m1);
-        StationResourceVO v2 = new StationResourceVO(ResourceType.PM25.getMsg(),a2,a2*w2,m2);
-        StationResourceVO v3 = new StationResourceVO(ResourceType.Ori.getMsg(),a3,a3*w3,m3);
+        StationResourceVO v1 = new StationResourceVO(ResourceType.N95.getMsg(),a1,a1*w1,m1,ResourceType.N95.getCode());
+        StationResourceVO v2 = new StationResourceVO(ResourceType.PM25.getMsg(),a2,a2*w2,m2,ResourceType.PM25.getCode());
+        StationResourceVO v3 = new StationResourceVO(ResourceType.Ori.getMsg(),a3,a3*w3,m3,ResourceType.Ori.getCode());
         StationResourceVO[] vos = new StationResourceVO[]{v1,v2,v3};
         log.info(">>>接收站物资清点-列表 获取成功");
         return ResultVOUtil.success(vos);
@@ -90,7 +90,7 @@ public class ReceiveStationController {
     public ResultVO getDesignStation(@RequestParam(value = "province", required = true)String province) {
         List<ReceiveStation> list;
         if (province == null|| StringUtil.isEmpty(province)) {
-            list = receiveStationDao.findAll(StationStatus.CHECKED.getCode());
+            list = receiveStationDao.findWAll(StationStatus.CHECKED.getCode());
         }
         else {
             list = receiveStationDao.findByProvince(province, StationStatus.CHECKED.getCode());

@@ -113,10 +113,10 @@
                 if (result.code != 0) {
                     alert(result.message);
                 }
-                hg.msg(JSON.stringify(result.data));
+                hg.msg(result.data);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                hg.msg(JSON.stringify("查看失败"));
+                hg.msg("查看失败");
             },
             complete: function () {
         

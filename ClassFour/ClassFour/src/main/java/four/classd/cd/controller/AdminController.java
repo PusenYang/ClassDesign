@@ -82,11 +82,11 @@ public class AdminController {
         }
         if (flag.equals(StationStatus.CHECKED.getCode().toString())) {
             log.info(">>>已审核调配站 获取成功");
-            return ResultVOUtil.success(designStationDao.findByStatus(StationStatus.UN_CHECK.getCode()));
+            return ResultVOUtil.success(designStationDao.findByStatus(StationStatus.CHECKED.getCode()));
         }
         else if (flag.equals(StationStatus.UN_CHECK.getCode().toString())){
             log.info(">>>未审核调配站 获取成功");
-            return ResultVOUtil.success(designStationDao.findByStatus(StationStatus.CHECKED.getCode()));
+            return ResultVOUtil.success(designStationDao.findByStatus(StationStatus.UN_CHECK.getCode()));
         }
         else {
             log.info(">>>所有调配站 获取成功");

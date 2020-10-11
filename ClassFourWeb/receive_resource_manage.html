@@ -21,85 +21,105 @@
 
 <body class="layui-body-content">
     <div class="layui-fluid">
-        <div class="layui-row">
-            <form class="layui-form">
-                <div class="layui-form-item">
-                    <label for="L_username" class="layui-form-label">
-                        物资总数
-                    </label>
-                    <div class="layui-input-inline">
-                        <input id="total_amount" type="text" required=""
-                            autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="L_repass" class="layui-form-label"></label>
-                    <button type="button" class="layui-btn" onclick="edit_resource()">确认</button></div>
-            </form>
+        <div class="layui-card">
+            <div class="layui-card-header">
+                <p style="text-align: center;font-size: large;">站点物资列表</p>
+                <span class="layui-layout-right">
+                    <a href="javascript:;" hg-event="fullscreen">
+                        <i class="layui-icon layui-icon-screen-full"></i>
+                    </a>
+                </span>
+            </div>
+            <div class="layui-card-body">
+                <table class="layui-hide" id="test" lay-filter="test"></table>
+            </div>
         </div>
     </div>
-    <script>
-        function edit_resource() {
-            var type = getParams("type");
-            var amount = document.getElementById("total_amount").value;
-            var token = document.cookie.split(";")[0];
-            if (token.length < 2) return;
-            $.ajax({
-                type: "POST",
-                url: "http://127.0.0.1:8000/rds1123/r_station/resource_list_edit",
-                data: JSON.stringify({
-                    "token": token,
-                    "type": type,
-                    "amount": amount
-                }),
-                dataType: "json",
-                contentType: "application/json;charset=utf-8",
-                async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
-                // cache: true,
-                timeout: 5000,
-                success: function (result) {
-                    if (result.code != 0) {
-                        alert(result.message);
-                    }
-                    layer.alert("修改成功", {
-                            icon: 6
-                        },
-                        function () {
-                            //关闭当前frame
-                            hg.close();
-
-                            // 可以对父窗口进行刷新 
-                            hg.base_reload();
-                        });
-                    return false;
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    layer.alert("修改失败，可能是网络错误，请稍后重试", {
-                            icon: 5
-                        },
-                        function () {
-                            //关闭当前frame
-                            hg.close();
-                            // 可以对父窗口进行刷新 
-                            hg.base_reload();
-                        });
-                    return false;
-                },
-                complete: function () {
-            
-                }
-            });
-        }
-
-        function getParams(key) {
-            var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
-            var r = window.location.search.substr(1).match(reg);
-            if (r != null) {
-                return unescape(r[2]);
-            }
-            return null;
-        };
-    </script>
 </body>
+<script>
+    var global_data;
+    $(document).ready(function(){
+        var token = document.cookie.split(";")[0];
+        if (token.length < 2) return;
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:8000/rds1123/r_station/resource_list",
+            data: {
+                "token": token
+            },
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
+            // cache: true,
+            timeout: 5000,
+            success: function (result) {
+                if (result.code != 0) {
+                    alert(result.message);
+                }
+                global_data = result.data;
+                var table = hg.table.datatable('test', '用户管理', global_data, {}, tableCols, '', false, 'full-180');
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                window.location.href = "./404.html";
+            },
+            complete: function () {
+        
+            }
+        });
+    });
+    
+    //修改
+    function edit(obj, field) {
+        //obj通过行tool修改-lay-event
+        var row = obj ? obj : table.getSelected(); 
+        if (row) {
+            console.log(row);
+            hg.open('物资校正', './receive_resource_manage_oper.html?type='+row.data.typeCode, 600, 400);
+        } else {
+            hg.msg('请选中一行数据，再操作！');
+        }
+    }
+
+    //查看
+    function depts(obj, field) {
+        var image_url = obj.data.image;
+        window.open(image_url);
+    }
+    
+    //监听表单提交事件
+    hg.form.onsubmit('sreach', function (data) {
+        var start = data.start;
+        var end = data.end;
+        if (start && end) {
+            if (start > end) {
+                hg.msg("时间范围错误，请重新选择!");
+                return false;
+            }
+        } else if (start || end) {
+            hg.msg("时间范围错误，请重新选择!");
+            return false;
+        }
+        hg.msg(JSON.stringify(data));
+        table && table.reload(data);
+    });
+    
+    var tableCols = [[
+        { field: 'type', width: '20%', title: '物资类型'}, 
+        { field: 'totalAmount', width: '20%', title: '物资总数（负数表示缺少对应数量）' }, 
+        { field: 'totalWeight', width: '20%', title: '物资总重（负数表示缺少对应数量）'}, 
+        { 
+            field: 'image', width: '20%', title: '示例图片', templet: function (d) {
+                return '<span><a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="depts">查看</a></span>'
+            }
+        }, 
+        {
+            field: 'right', width: '20%', title: '操作', templet: function (d) {
+                return '<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>'
+            }
+        }
+    ]
+    ];
+   
+</script>
 
 </html>

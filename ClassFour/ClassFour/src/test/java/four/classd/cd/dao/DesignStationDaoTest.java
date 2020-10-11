@@ -2,6 +2,7 @@ package four.classd.cd.dao;
 
 import four.classd.cd.model.entity.DesignStation;
 import four.classd.cd.model.entity.Position;
+import four.classd.cd.model.enums.StationStatus;
 import four.classd.cd.util.DateUtil;
 import four.classd.cd.util.KeyUtil;
 import org.junit.Test;
@@ -18,6 +19,30 @@ public class DesignStationDaoTest {
 
     @Autowired
     private DesignStationDao designStationDao;
+
+    @Test
+    public void testGetDeisng() {
+        List<String> stations = designStationDao.findNameByProvince("湖南省",StationStatus.CHECKED.getCode());
+        List<DesignStation> designStations = designStationDao.findByStatus(1);
+        System.out.println("-----------------------");
+        for (String s : stations) {
+            System.out.println(s);
+        }
+    }
+
+    @Test
+    public void testGetDesign() {
+        List<String> stations = designStationDao.findNameByProvinceO("湖南省");
+        System.out.println("-----------------------");
+        for (String s : stations) {
+            System.out.println(s);
+        }
+    }
+
+    @Test
+    public void testGetByStatus() {
+        List<DesignStation> list = designStationDao.findByStatus(StationStatus.CHECKED.getCode());
+    }
 
     @Test
     public void testAddStation() {

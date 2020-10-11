@@ -94,12 +94,8 @@
                         <a><i class="fa fa-user-plus fa-fw"></i><cite>登录注册</cite><i
                                 class="fa fa-angle-down fa-fw nav_right"></i></a>
                         <ul class="sub-menu">
-                            <li>
-                                <dd lay-unselect>
-                                    <a onclick="hg.open('登录','./login.html')">
-                                        <i class="fa fa-address-card-o fa-fw"></i>登录
-                                    </a>
-                                </dd>
+                            <li class="sub-tab" hg-title="登录" hg-nav="./login.html">
+                                <a><i class="fa fa-users fa-fw"></i><cite>登录</cite></a>
                             </li>
                             <li class="sub-tab" hg-title="注册" hg-nav="./register.html">
                                 <a><i class="fa fa-users fa-fw"></i><cite>注册</cite></a>
@@ -293,8 +289,7 @@
             },
             dataType: "json",
             contentType: "application/json;charset=utf-8",
-            async: true, // 设置该值为false后，JS不会向下执行，而是原地等待服务器返回数据，并完成相应的回调函数后，再向下执行
-            // cache: true,
+            async: true, 
             timeout: 5000,
             success: function (result) {
                 if (result.code != 0) {

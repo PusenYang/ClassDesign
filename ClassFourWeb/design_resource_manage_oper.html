@@ -44,6 +44,7 @@
             var amount = document.getElementById("total_amount").value;
             var token = document.cookie.split(";")[0];
             if (token.length < 2) return;
+            console.log(type);
             $.ajax({
                 type: "POST",
                 url: "http://127.0.0.1:8000/rds1123/d_station/resource_list_edit",

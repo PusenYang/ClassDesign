@@ -1,6 +1,7 @@
 package four.classd.cd.dao;
 
 import four.classd.cd.model.entity.ReceiveStation;
+import four.classd.cd.model.entity.ReceiveStationResource;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,10 @@ public interface ReceiveStationDao {
 
     static String RSS_TABLE = "class_design.receive_station_resource";
     static String INSERT_FIELD2 = "station_id, type_code, amount";
+
+    // 增加资源
+    @Insert({"insert into",RSS_TABLE,"(",INSERT_FIELD2,") values(#{stationId},#{typeCode},#{amount})"})
+    Integer addResource(ReceiveStationResource resource);
 
     // 修改资源数量
     @Update({"update",RSS_TABLE,"set amount=#{amount} where station_id=#{id} and type_code=#{code}"})
@@ -44,22 +49,32 @@ public interface ReceiveStationDao {
     List<ReceiveStation> findByStatus(@Param("status") int status);
 
     // 查询站点
-    @Select({"select * from",RS_TABLE,"where id = {id}"})
+    @Select({"select * from",RS_TABLE,"where id = #{id}"})
     ReceiveStation findById(@Param("id")int id);
 
     // 查询站点
-    @Select({"select name from",RS_TABLE,"where id = {id}"})
+    @Select({"select * from",RS_TABLE,"where name = #{name}"})
+    ReceiveStation findByName(@Param("name")String name);
+
+    // 查询站点
+    @Select({"select name from",RS_TABLE,"where id = #{id}"})
     String findNameById(@Param("id")int id);
 
     // 根据省份查询站点
     @Select({"select * from",RS_TABLE,"where status = #{status} and province = #{province}"})
     List<ReceiveStation> findByProvince(@Param("province")String province, @Param("status")int status);
 
+    @Select({"select name from",RS_TABLE,"where status = #{status} and province = #{province}"})
+    List<String> findNameByProvince(@Param("province")String province, @Param("status")int status);
+
     // 根据市查询站点
 
     // 查询所有站点
+    @Select({"select name from",RS_TABLE,"where status = #{status}"})
+    List<String> findAll(@Param("status")int status);
+
     @Select({"select * from",RS_TABLE,"where status = #{status}"})
-    List<ReceiveStation> findAll(@Param("status")int status);
+    List<ReceiveStation> findWAll(@Param("status")int status);
 
     // 查询所有站点
     @Select({"select * from",RS_TABLE,})

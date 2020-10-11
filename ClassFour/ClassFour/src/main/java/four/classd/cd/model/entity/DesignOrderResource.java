@@ -13,4 +13,10 @@ public class DesignOrderResource {
     private String number;
     private int typeCode;
     private int amount;
+
+    public DesignOrderResource(String number, int typeCode, int amount) {
+        this.number = number;
+        this.typeCode = typeCode;
+        this.amount = amount;
+    }
 }
