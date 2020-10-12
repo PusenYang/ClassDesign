@@ -1,4 +1,3 @@
--------------------------------------------------数据库结构----------------------------------------------------------
 CREATE DATABASE `class_design` CHARACTER SET 'utf8mb4';
 
 CREATE TABLE `class_design`.`position`  (
@@ -156,7 +155,7 @@ CREATE TABLE `class_design`.`design_order`  (
   `end_name` varchar(45) NULL,
   `end_address` varchar(255) NULL,
   `end_date` varchar(45) NULL,
-    `create_time` varchar(45) NULL,
+  `create_time` varchar(45) NULL
 );
 
 -- 资源
@@ -193,7 +192,7 @@ CREATE TABLE `class_design`.`user_order_resource`  (
   `amount` int NULL
   );
 
-----------------------------------------------------------数据--------------------------------------------------------
+
 INSERT INTO `class_design`.`admin`(`id`, `username`, `password`, `salt`) VALUES (999999, 'admin', '4381A4A67D264FBC4C88629B9CB469BD', 'MySalt');
 
 INSERT INTO `class_design`.`resource`(`id`, `type_code`, `type_name`, `weight`, `image`) VALUES (100, 1, 'N95口罩', 8, 'http://120.53.24.57:9090/resour/mask_n95.jpg');
@@ -201,6 +200,8 @@ INSERT INTO `class_design`.`resource`(`id`, `type_code`, `type_name`, `weight`, 
 INSERT INTO `class_design`.`resource`(`id`, `type_code`, `type_name`, `weight`, `image`) VALUES (200, 2, 'PM2.5口罩', 12, 'http://120.53.24.57:9090/resour/mask_pm25.jpg');
 
 INSERT INTO `class_design`.`resource`(`id`, `type_code`, `type_name`, `weight`, `image`) VALUES (300, 3, '普通医用外科口罩', 3, 'http://120.53.24.57:9090/resour/mask_ori.jpg');
+
+INSERT INTO `class_design`.`position`(`id`, `province`, `city`, `county`) VALUES (1123, '湖南省', '长沙市', '天心区');
 
 
 

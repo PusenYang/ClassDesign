@@ -111,29 +111,16 @@
                 <label class="layui-form-label">选择站点地址</label>
                 <div class="layui-input-block">
                   <div class="layui-inline">
-                    <select name="quiz1" id="province_select">
-                      <option value="">请选择省</option>
-                      <option value="浙江" selected="">浙江省</option>
-                      <option value="你的工号">江西省</option>
-                      <option value="你最喜欢的老师">福建省</option>
+                    <select name="quiz1" id="province_select" lay-filter="demo">
+                        <option value='湖南省'>湖南省</option>
+                        <option value='湖北省'>湖北省</option>
+                        <option value='安徽省'>安徽省</option>
+                        <option value='江西省'>江西省</option>
+                        <option value='河南省'>河南省</option>
                     </select>
                   </div>
                   <div class="layui-inline">
                     <select name="quiz2" id="city_select">
-                      <option value="">请选择市</option>
-                      <option value="杭州">杭州</option>
-                      <option value="宁波" disabled="">宁波</option>
-                      <option value="温州">温州</option>
-                      <option value="温州">台州</option>
-                      <option value="温州">绍兴</option>
-                    </select>
-                  </div>
-                  <div class="layui-inline">
-                    <select name="quiz3" id="county_select">
-                      <option value="">请选择县/区</option>
-                      <option value="西湖区">西湖区</option>
-                      <option value="余杭区">余杭区</option>
-                      <option value="拱墅区">临安市</option>
                     </select>
                   </div>
                 </div>
@@ -187,8 +174,8 @@
             alert(username + username.length);
             do_user_register();
         }
-        else if (role == "1") do_station_register("http://127.0.0.1:8000/rds1123/register/design_manager");
-        else if (role == "2") do_station_register("http://127.0.0.1:8000/rds1123/register/receive_manager");
+        else if (role == "1") do_station_register("http://120.53.24.57:8000/rds1123/register/design_manager");
+        else if (role == "2") do_station_register("http://120.53.24.57:8000/rds1123/register/receive_manager");
         else alert("请先选择角色 ！");
     }
 
@@ -196,7 +183,7 @@
         
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/rds1123/register/user",
+            url: "http://120.53.24.57:8000/rds1123/register/user",
             data: JSON.stringify({
                 "username": document.getElementById("username").value,
                 "password": document.getElementById("password").value,
@@ -233,10 +220,6 @@
         var city_idx = city_select.selectedIndex;
         var station_city = city_select.options[city_idx].value;
 
-        var county_select = document.getElementById("county_select");
-        var county_idx = county_select.selectedIndex;
-        var station_county = county_select.options[county_idx].value;
-
         if (image_url.length < 2){
             alert("请先上传资格凭证 ！");
             return;
@@ -257,7 +240,7 @@
                 "station_image": image_url,
                 "station_province": station_province,
                 "station_city": station_city,
-                "station_county": station_county
+                "station_county": "test-county"
             }),
             dataType: "json",
             contentType: "application/json;charset=utf-8",
@@ -288,7 +271,7 @@
       //拖拽上传
       upload.render({
         elem: '#test-upload-drag'
-        ,url: 'http://127.0.0.1:8000/rds1123/register/image'
+        ,url: 'http://120.53.24.57:8000/rds1123/register/image'
         ,done: function(res){
             image_url = res.data;
             alert(res.message);
@@ -296,6 +279,55 @@
       });
       
   });
+
+layui.use(['layer', 'jquery', 'form'], function () {
+    var layer = layui.layer,
+            $ = layui.jquery,
+            form = layui.form;
+
+    form.on('select(demo)', function(data){
+        var sel = document.getElementById("province_select");
+        var idx = sel.selectedIndex;
+        var val = sel.options[idx].value; 
+        var res = get_city_by_province(val);
+        var city = document.getElementById("city_select");
+        city.innerHTML = res;
+        //最后再渲柒一次
+        form.render('select');//select是固定写法 不是选择器
+    });
+});
+
+function get_city_by_province(province) {
+    var res = "";
+    if (province == "湖南省") {
+        res += "<option value='长沙市'>长沙市</option>";
+        res += "<option value='岳阳市'>岳阳市</option>";
+        res += "<option value='衡阳市'>衡阳市</option>";
+    }
+    else if (province == "湖北省") {
+        res += "<option value='武汉市'>武汉市</option>";
+        res += "<option value='荆州市'>荆州市</option>";
+        res += "<option value='宜昌市'>宜昌市</option>";
+    }
+    else if (province == "安徽省") {
+        res += "<option value='合肥市'>合肥市</option>";
+        res += "<option value='阜阳市'>阜阳市</option>";
+        res += "<option value='宿州市'>宿州市</option>";
+    }
+    else if (province == "江西省") {
+        res += "<option value='南昌市'>南昌市</option>";
+        res += "<option value='吉安市'>吉安市</option>";
+    }
+    else if (province == "河南省") {
+        res += "<option value='南阳市'>南阳市</option>";
+        res += "<option value='信阳市'>信阳市</option>";
+        res += "<option value='郑州市'>郑州市</option>";
+    }
+    else {
+        res += "";
+    }
+    return res;
+}
 </script>
 
 </html>

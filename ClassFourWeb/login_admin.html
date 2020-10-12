@@ -42,7 +42,7 @@
         // alert(username+password);
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/rds1123/login_admin",
+            url: "http://120.53.24.57:8000/rds1123/login_admin",
             data: JSON.stringify({
                 "username": username, 
                 "password": password
@@ -68,10 +68,7 @@
                 window.location.href = "./admin_manage.html";
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                window.location.href = "./404.html";
-                // alert("请求对象XMLHttpRequest: "+XMLHttpRequest.responseText);
-			    // alert("错误类型textStatus: "+textStatus);
-			    // alert("异常对象errorThrown: "+errorThrown);
+                alert("登录失败, 请稍后重试");                
             },
             complete: function () {
         

@@ -138,7 +138,7 @@
         var val = sel.options[idx].value;
         $.ajax({
             type: "GET",
-            url: "http://127.0.0.1:8000/rds1123/info/design_by_province",
+            url: "http://120.53.24.57:8000/rds1123/info/design_by_province",
             data: {
                 "province": val
             },
@@ -156,7 +156,7 @@
                 for (var i in list) {
                     tmp += "<option value="+list[i]+">"+list[i]+"</option>";
                 }
-                alert(tmp);
+                // alert(tmp);
                 design_sel.innerHTML = tmp;
                 renderForm();
             },
@@ -185,7 +185,7 @@
         var val = sel.options[idx].value;
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/rds1123/u_order/create",
+            url: "http://120.53.24.57:8000/rds1123/u_order/create",
             data: JSON.stringify({
                 "token": token,
                 "phone": document.getElementById("phone").value,

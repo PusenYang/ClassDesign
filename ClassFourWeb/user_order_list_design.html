@@ -62,7 +62,7 @@
         var idx2 = select2.selectedIndex;
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/rds1123/u_order/list_design",
+            url: "http://120.53.24.57:8000/rds1123/u_order/list_design",
             data: JSON.stringify({
                 "status": select2.options[idx2].value,
                 "token": token
@@ -93,7 +93,7 @@
         if (token.length < 2) return;
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/rds1123/u_order/design_verify",
+            url: "http://120.53.24.57:8000/rds1123/u_order/design_verify",
             data: JSON.stringify({
                 "number": obj.data.number,
                 "token": token
@@ -121,7 +121,7 @@
     function get_info(obj, field) {
         $.ajax({
             type: "GET",
-            url: "http://127.0.0.1:8000/rds1123/u_order/resource_detail",
+            url: "http://120.53.24.57:8000/rds1123/u_order/resource_detail",
             data: {
                 "number": obj.data.number
             },
@@ -148,7 +148,7 @@
     function get_date(obj, field) {
         $.ajax({
             type: "GET",
-            url: "http://127.0.0.1:8000/rds1123/u_order/date",
+            url: "http://120.53.24.57:8000/rds1123/u_order/date",
             data: {
                 "number": obj.data.number
             },

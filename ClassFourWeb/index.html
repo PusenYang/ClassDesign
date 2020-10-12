@@ -109,7 +109,7 @@
                             <li class="sub-tab" hg-title="使用文档" hg-nav="./user_guide.html">
                                 <a><i class="fa fa-question-circle fa-fw"></i><cite>使用文档</cite></a>
                             </li>
-                            <li class="sub-tab" hg-title="接口文档" hg-nav="./swagger-ui.html">
+                            <li class="sub-tab" hg-title="接口文档" hg-nav="http://120.53.24.57:8000/rds1123/swagger-ui.html#/">
                                 <a><i class="fa fa-code-fork fa-fw"></i><cite>接口文档</cite></a>
                             </li>
                         </ul>
@@ -283,7 +283,7 @@
         if (token.length < 2) return;
         $.ajax({
             type: "GET",
-            url: "http://127.0.0.1:8000/rds1123/info/avatar_name",
+            url: "http://120.53.24.57:8000/rds1123/info/avatar_name",
             data: {
                 "token": token
             },

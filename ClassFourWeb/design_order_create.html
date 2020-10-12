@@ -135,7 +135,7 @@
       if (token.length < 2) return;
       $.ajax({
             type: "GET",
-            url: "http://127.0.0.1:8000/rds1123/d_order/advice",
+            url: "http://120.53.24.57:8000/rds1123/d_order/advice",
             data: {
                 "token": token
             },
@@ -185,7 +185,7 @@
         console.log("get goer");
         $.ajax({
             type: "GET",
-            url: "http://127.0.0.1:8000/rds1123/info/goer_by_design",
+            url: "http://120.53.24.57:8000/rds1123/info/goer_by_design",
             data: {
                 "token": token
             },
@@ -222,7 +222,7 @@
         var val = sel.options[idx].value;
         $.ajax({
             type: "GET",
-            url: "http://127.0.0.1:8000/rds1123/info/receive_by_province",
+            url: "http://120.53.24.57:8000/rds1123/info/receive_by_province",
             data: {
                 "province": val
             },
@@ -272,7 +272,7 @@
         var val1 = sel1.options[idx1].value;
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/rds1123/d_order/create",
+            url: "http://120.53.24.57:8000/rds1123/d_order/create",
             data: JSON.stringify({
                 "token": token,
                 "go_manager_id": val1,
