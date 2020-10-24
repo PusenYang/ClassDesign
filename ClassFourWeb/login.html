@@ -66,7 +66,7 @@
         }
         $.ajax({
             type: "POST",
-            url: "http://120.53.24.57:8000/rds1123/login",
+            url: "http://120.53.24.57:8000/pusenyang/login",
             data: JSON.stringify({
                 "username": username, 
                 "password": password,
@@ -83,6 +83,7 @@
                 }
                 document.cookie = result.data;
                 alert("登录成功 ! ");
+                window.open("./index.html");
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("登录失败 ！");

@@ -70,7 +70,7 @@
         var idx = select.selectedIndex;
         $.ajax({
             type: "GET",
-            url: "http://120.53.24.57:8000/rds1123/r_station/list",
+            url: "http://120.53.24.57:8000/pusenyang/r_station/list",
             data: {
                 "province": select.options[idx].value
             },
@@ -100,7 +100,7 @@
     function depts(obj, field) {
         $.ajax({
             type: "GET",
-            url: "http://120.53.24.57:8000/rds1123/r_station/resource",
+            url: "http://120.53.24.57:8000/pusenyang/r_station/resource",
             data: {
                 "rid": JSON.stringify(obj.data.id)
             },

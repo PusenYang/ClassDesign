@@ -72,8 +72,8 @@
         var idx2 = select2.selectedIndex;
         var val = select2[idx2].value;
 
-        if (val == "1") url = "http://120.53.24.57:8000/rds1123/admin/part_design";
-        else url = "http://120.53.24.57:8000/rds1123/admin/part_receive";
+        if (val == "1") url = "http://120.53.24.57:8000/pusenyang/admin/part_design";
+        else url = "http://120.53.24.57:8000/pusenyang/admin/part_receive";
         $.ajax({
             type: "POST",
             url: url,
@@ -129,7 +129,7 @@
         alert("doooo");
         $.ajax({
             type: "POST",
-            url: "http://120.53.24.57:8000/rds1123/admin/do_check",
+            url: "http://120.53.24.57:8000/pusenyang/admin/do_check",
             data: JSON.stringify({
                 "id": station_id,
                 "name": station_name,

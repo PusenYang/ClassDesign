@@ -174,8 +174,8 @@
             alert(username + username.length);
             do_user_register();
         }
-        else if (role == "1") do_station_register("http://120.53.24.57:8000/rds1123/register/design_manager");
-        else if (role == "2") do_station_register("http://120.53.24.57:8000/rds1123/register/receive_manager");
+        else if (role == "1") do_station_register("http://120.53.24.57:8000/pusenyang/register/design_manager");
+        else if (role == "2") do_station_register("http://120.53.24.57:8000/pusenyang/register/receive_manager");
         else alert("请先选择角色 ！");
     }
 
@@ -183,7 +183,7 @@
         
         $.ajax({
             type: "POST",
-            url: "http://120.53.24.57:8000/rds1123/register/user",
+            url: "http://120.53.24.57:8000/pusenyang/register/user",
             data: JSON.stringify({
                 "username": document.getElementById("username").value,
                 "password": document.getElementById("password").value,
@@ -271,7 +271,7 @@
       //拖拽上传
       upload.render({
         elem: '#test-upload-drag'
-        ,url: 'http://120.53.24.57:8000/rds1123/register/image'
+        ,url: 'http://120.53.24.57:8000/pusenyang/register/image'
         ,done: function(res){
             image_url = res.data;
             alert(res.message);
