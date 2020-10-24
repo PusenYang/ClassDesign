@@ -128,6 +128,12 @@ public class LoginController {
         return ResultVOUtil.success(token);
     }
 
+    /**
+     * 管理员登录有一个独立的接口
+     * @param username
+     * @param password
+     * @return
+     */
     private ResultVO adminLogin(String username, String password) {
         Admin user = adminDao.findAdmin(username);
         if (user == null) {

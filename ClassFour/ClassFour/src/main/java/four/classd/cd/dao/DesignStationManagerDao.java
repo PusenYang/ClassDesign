@@ -21,8 +21,8 @@ public interface DesignStationManagerDao {
     @Insert({"insert into",DSM_TABLE,"(",INSERT_FIELD,") values(#{id},#{username},#{password},#{salt},#{phone},#{idCard},#{stationId},#{avatar},#{createTime})"})
     Integer addManager(DesignStationManager manager);
 
-    @Update({"update",DSM_TABLE,"set token = #{token} where username = #{username}"})
-    Integer updateToken(@Param("username")String username, @Param("token")String token);
+    @Update({"update",DSM_TABLE,"set token = #{token} where username = #{key} or phone = #{key}"})
+    Integer updateToken(@Param("key")String key, @Param("token")String token);
 
     // 查询负责人
     @Select({"select * from",DSM_TABLE,"where username = #{key} or id = #{key} or phone = #{key}"})
