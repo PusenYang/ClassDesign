@@ -68,10 +68,10 @@ public class StationServiceImpl implements StationService {
         if (r1 < 0) {
             res += "; 该站缺乏N95口罩"+(-r1)+"个, 您站拥有N95口罩"+designStationDao.getAmount(did, ResourceType.N95.getCode()) + "个";
         }
-        else if (r2 < 0) {
+        if (r2 < 0) {
             res += "; 该站缺乏PM2.5口罩"+(-r2)+"个, 您站拥有PM2.5口罩"+designStationDao.getAmount(did, ResourceType.PM25.getCode()) + "个";
         }
-        else if (r3 < 0) {
+        if (r3 < 0) {
             res += "; 该站缺乏普通医用外科口罩"+(-r3)+"个, 您站拥有普通医用外科口罩"+designStationDao.getAmount(did, ResourceType.Ori.getCode()) + "个";
         }
         return res + "; 请您优先考虑该站😊";
