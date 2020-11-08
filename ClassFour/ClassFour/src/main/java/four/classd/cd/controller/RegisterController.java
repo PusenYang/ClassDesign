@@ -151,7 +151,7 @@ public class RegisterController {
         String stationCity = map.get("station_city").toString();
         String stationImage = map.get("station_image").toString();
         String stationRemark = map.get("station_remark").toString();
-
+        log.info(">>> 调配站管理人员注册, 接收到的图片链接是: " + stationImage);
         /* 验证 */
         if (StringUtil.isEmpty(username) || StringUtil.isEmpty(password)) {
             log.info(">>>注册 用户名或密码为空");
@@ -199,7 +199,7 @@ public class RegisterController {
         station.setCounty(stationCounty);
         station.setProvince(stationProvince);
         station.setCity(stationCity);
-        station.setImage(stationCity);
+        station.setImage(stationImage);
         station.setRemark(stationRemark);
         station.setManagerId(managerId);
         station.setManagerName(username);
@@ -306,7 +306,7 @@ public class RegisterController {
         station.setAddress(stationAddress);
         station.setProvince(stationProvince);
         station.setCity(stationCity);
-        station.setImage(stationCity);
+        station.setImage(stationImage);
         station.setRemark(stationRemark);
         station.setManagerId(managerId);
         station.setManagerName(username);
