@@ -55,19 +55,21 @@ public class RegisterController {
     @ApiOperation(value = "图片上传接口")
     public ResultVO uploadImage(@RequestParam("file") MultipartFile file) {
         String localName = file.getOriginalFilename(); // 上传文件的真实名称
+        log.info(">>> 文件的真实名称是: " + localName);
         String suffixName = localName.substring(localName.lastIndexOf(".")).toLowerCase();//获取后缀名
         if (!suffixName.equals(".png") && !suffixName.equals(".jpg") && !suffixName.equals(".jpeg") && !suffixName.equals(".bmp") && !suffixName.equals(".tif")) {
             log.info(">>>图片上传 不支持的格式："+suffixName);
-            return ResultVOUtil.error(ExceptionType.PARAM_ERROR.getCode(), "不支持的文件的格式");
+            return ResultVOUtil.error(ExceptionType.PARAM_ERROR.getCode(), "不支持文件的格式");
         }
         String savePath = PathConstant.SERVER + KeyUtil.generateUserID() + localName;
+        log.info(">>> 文件的存储路径是: " + savePath);
         try {
             file.transferTo(new File(savePath));
         } catch (IOException e) {
             log.info(">>>图片上传 发生错误："+e.toString());
             return ResultVOUtil.error(ExceptionType.SERVER_ERROR.getCode(), "图片上传发生错误，请稍后重试");
         }
-        log.info(">>>图片上传 成功");
+        log.info(">>>图片上传 成功 : " + savePath);
         return ResultVOUtil.success(savePath);
     }
 

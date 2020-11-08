@@ -200,6 +200,7 @@
                     alert(result.message);
                     return ;
                 }
+                alert("注册成功 ! 即将跳转至登录界面");
                 window.location.href = "./login.html";
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -220,7 +221,7 @@
         var city_idx = city_select.selectedIndex;
         var station_city = city_select.options[city_idx].value;
 
-        if (image_url.length < 2){
+        if (image_url.length < 4){
             alert("请先上传资格凭证 ！");
             return;
         } 
@@ -252,6 +253,7 @@
                     alert(result.message);
                     return;
                 }
+                alert("注册成功 ! 即将跳转至登录界面")
                 window.location.href = "./login.html";
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {

@@ -1,5 +1,7 @@
 nohup java -jar shop.jar > system.log 2>&1 &
 
+配置nginx: https://blog.csdn.net/panchang199266/article/details/81772206
+
 个人所创建的物资单=》调配站创建的调配单
 
 调配站以天（以10-02为例）为单位，在固定时间1统计当天收到的所有物资，调配站管理员确认当天收到的物资；
