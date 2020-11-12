@@ -61,16 +61,18 @@ public class RegisterController {
             log.info(">>>图片上传 不支持的格式："+suffixName);
             return ResultVOUtil.error(ExceptionType.PARAM_ERROR.getCode(), "不支持文件的格式");
         }
-        String savePath = PathConstant.SERVER + KeyUtil.generateUserID() + localName;
+        String tmp = KeyUtil.generatePosID().toString();
+        String savePath = PathConstant.SERVER + tmp + localName;
         log.info(">>> 文件的存储路径是: " + savePath);
+        String imgUrl = PathConstant.IMG_URL + tmp + localName;
         try {
             file.transferTo(new File(savePath));
         } catch (IOException e) {
             log.info(">>>图片上传 发生错误："+e.toString());
             return ResultVOUtil.error(ExceptionType.SERVER_ERROR.getCode(), "图片上传发生错误，请稍后重试");
         }
-        log.info(">>>图片上传 成功 : " + savePath);
-        return ResultVOUtil.success(savePath);
+        log.info(">>>图片上传 成功 : " + imgUrl);
+        return ResultVOUtil.success(imgUrl);
     }
 
     @PostMapping("/user")

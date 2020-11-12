@@ -78,13 +78,13 @@ public class LoginController {
             return adminLogin(username, password);
         }
         else if (flag.equals(RoleConstant.DESIGN_MANAGER)) {
-            return designLogin(username, password);
+            return designLogin(flag, username, password);
         }
         else if (flag.equals(RoleConstant.RECEIVE_MANAGER)) {
-            return receiveLogin(username, password);
+            return receiveLogin(flag, username, password);
         }
         else {
-            return userLogin(username, password);
+            return userLogin(flag, username, password);
         }
     }
 
@@ -150,9 +150,9 @@ public class LoginController {
         return ResultVOUtil.success(token);
     }
 
-    private ResultVO designLogin(String username, String password) {
+    private ResultVO designLogin(String flag, String username, String password) {
         DesignStationManager user = designStationManagerDao.findManager(username);
-        if (user == null) {
+        if (user == null || flag.equals(RoleConstant.DESIGN_MANAGER)) {
             log.info(">>>登录 该用户尚未注册 : "+ username);
             return ResultVOUtil.error(ExceptionType.PARAM_ERROR.getCode(), "该用户尚未注册");
         }
@@ -167,9 +167,9 @@ public class LoginController {
         return ResultVOUtil.success(token);
     }
 
-    private ResultVO receiveLogin(String username, String password) {
+    private ResultVO receiveLogin(String flag, String username, String password) {
         ReceiveStationManager user = receiveStationManagerDao.findManager(username);
-        if (user == null) {
+        if (user == null || flag.equals(RoleConstant.RECEIVE_MANAGER)) {
             log.info(">>>登录 该用户尚未注册 : "+ username);
             return ResultVOUtil.error(ExceptionType.PARAM_ERROR.getCode(), "该用户尚未注册");
         }
@@ -184,9 +184,9 @@ public class LoginController {
         return ResultVOUtil.success(token);
     }
 
-    private ResultVO userLogin(String username, String password) {
+    private ResultVO userLogin(String flag, String username, String password) {
         User user = userDao.findUser(username);
-        if (user == null) {
+        if (user == null || flag.equals(RoleConstant.USER)) {
             log.info(">>>登录 该用户尚未注册 : "+ username);
             return ResultVOUtil.error(ExceptionType.PARAM_ERROR.getCode(), "该用户尚未注册");
         }
