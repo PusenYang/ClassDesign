@@ -38,7 +38,9 @@
                             </select>
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <button onclick="get_order_list" class="layui-btn layui-btn-sm layui-btn-normal" ><i class="layui-icon layui-icon-sm">&#xe615;</i></button>
+                            <button onclick="get_order_list()" class="layui-btn layui-btn-sm layui-btn-normal" >
+                                <i class="layui-icon layui-icon-sm">&#xe615;</i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -152,7 +154,7 @@
         { field: 'endAddress', title: '接收站地址', width: '15%'}, 
         { field: 'startDate', title: '始发日期', width: '12.5%'}, 
         { field: 'endDate', title: '到达日期', width: '12.5%'}, 
-        { field: 'status', title: '状态',width: '10%'},
+        // { field: 'status', title: '状态',width: '10%'},
         {
             field: 'right', width: '15%', title: '操作', templet: function (d) {
                 return '<a class="layui-btn layui-btn-xs" lay-event="get_info">查看详情</a> <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="verify_sent">确认发出</a>'
